@@ -6,4 +6,7 @@ b = [ 1; 0 ];
 c = [ 1; 1 ];
 H = [ 1  2 ; 0  1 ];
 
+% check dimensions
+b'*H*c; % error if dimensions do not fit
+
 end

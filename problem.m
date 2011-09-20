@@ -1,9 +1,12 @@
-function [ g ] = problem ( X, N )
+function [ g ] = problem ( X)
 %PROBLEM generate the function g using the data given by DATA.
 
 [ b, H, c ] = data;
-C = zeros (N, N);
-for i = 1:N
+
+a = size(H);
+dim = a(1,2);
+C = zeros (dim, dim);
+for i = 1:dim
 	C(i,i) = c(i) * X(i) * X(i);
 end
 
