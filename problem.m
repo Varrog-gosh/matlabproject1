@@ -3,8 +3,7 @@ function [ g ] = problem ( X)
 
 [ b, H, c ] = data;
 
-a = size(H);
-dim = a(1,2);
+dim = size(H,2); % the dimension of the matrix and vectors
 C = zeros (dim, dim);
 for i = 1:dim
 	C(i,i) = c(i) * X(i) * X(i);
