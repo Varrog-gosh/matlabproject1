@@ -26,5 +26,3 @@ while condition % the condition is calculated at the end of the while loop, beca
 end
 
 end
-
-
