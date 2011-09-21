@@ -20,7 +20,7 @@ norm_old = norm ( grad ( X ) );  % choose the norm || * ||_2
 
 while condition % the condition is calculated at the end of the while loop, because there should at least one iteration
 	maxiterations = maxiterations - 1; % count from the maximum number of iterations to zero
-	X = X - ( grad ( X ) \ hessian ( X ) )';   % the algorithm of the newton method
+	X = X - linsolve( hessian ( X ), grad ( X ) );   % the algorithm of the newton method
     residual = norm( grad ( X ) ) / norm_old  % the residual
 	condition = ( maxiterations > 0 ) && ( residual > tol );
 end
