@@ -1,5 +1,5 @@
 function [ HessG ] = hessian( X )
-%HESSG return the heesian of the function G of the project
+%HESSG Return the heesian of the function G of the project
 
 [~, H, c] = data;
 N = size(H,1);

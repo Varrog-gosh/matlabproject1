@@ -1,5 +1,5 @@
 function [ g ] = problem ( X )
-%PROBLEM generate the function g using the data given by DATA.
+%PROBLEM Generate the function g using the data given by DATA.
 
 [ b, H, c ] = data;
 N = size(H,1);
