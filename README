@@ -1,1 +1,6 @@
 This is project 1.
+Questions: 
+	what are our canditade numbers?
+
+Bugs: 
+	in improved steepest decent: after a few iterations alpha gets to small, and there are no more changes in the residual

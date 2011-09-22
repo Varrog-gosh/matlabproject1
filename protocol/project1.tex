@@ -1,0 +1,61 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amssymb,amsmath,graphicx,listings}
+%\usepackage{uniinput}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\renewcommand{\familydefault}{\sfdefault}
+\newcommand{\leadingzero}[1]{\ifnum #1<10 0\the#1\else\the#1\fi}
+\newcommand{\mytoday}{\leadingzero{\day}.\leadingzero{\month}.\the\year}
+
+
+
+\begin{document}
+\title{Semester project TMA4215}
+\author{Candidate number\\ and\\ Canditate number two}
+\date{\mytoday}
+\maketitle
+\newpage
+
+
+\section{Task}
+We consider minimization problems of the type
+\begin{align*}
+\min_{x \in R^n} g(\bf{x}), g(\bf{x}):=-\bf{b}^T\bf{x} + \frac12\bf{x}^TH\bf{x}+\frac1{12}\bf{x}^TC(\bf{x})\bf{x},
+\end{align*}
+here $\bf{b} \in \mathbb{R}^n$ and, $H$ is a $n \times n$ symmetric and positive definite matrix and $C(\bf{x})$ is a diagonal
+matrix with diagonal entries $c_i x^2_i, i = 1, . . . , n$. 
+Here $c_i > 0$ are the components of a vector $\bf{c} \in \mathbb{R}^n$ 
+and $x_i$ are the components of $\bf{x}$. 
+\section{Generation of the data}
+
+\lstinputlisting{../data.m}
+
+\section{Gradient and Hessian of $g$}
+
+\lstinputlisting{../problem.m}
+\lstinputlisting{../grad.m}
+\lstinputlisting{../hessian.m}
+\section{Existance of minimum}
+\begin{align*}
+\nabla^2g(x)=H+C
+\end{align*}
+Let $u\in R^n$, then
+$$u(\nabla^2g(x))u = u (H+C) u = u H u + uCu$$
+Because $H$ is positiv definit, $uHu>0$. 
+$$uCu = \sum_{i=1}^n u_i c_i x_i^2 u_i = \sum_{i=1}^n c_ix_i^2u_i^2$$
+Since $c_i>0$, $uCu>0$, so $u(\nabla^2g(x))u>0$ $\Rightarrow$ positive definit.
+\section{Plot for $n=2$}
+
+\section{Steepest decent method}
+
+\section{Equivalence of steepest decent method and forward Euler method}
+
+\section{Improved steepest decent method}
+
+\section{Newton method}
+
+\section{Combination of steepest decent methode and Newton method}
+
+
+\end{document}

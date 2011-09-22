@@ -9,7 +9,7 @@ norm_old = norm ( grad ( X ) );
 
 while condition
 	maxiterations = maxiterations - 1;
-	X = X - get_alpha ( X ) * grad ( X );
+	X = X - alpha ( X ) * grad ( X );
 	residual = norm ( grad ( X ) ) / norm_old;
 	condition = (maxiterations > 0) && ( residual > tol);
 end
