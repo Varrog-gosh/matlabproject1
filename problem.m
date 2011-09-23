@@ -4,7 +4,11 @@ function [ g ] = problem ( X )
 [ b, H, c ] = data;
 dim = size(H,1);
 C = zeros ( dim, dim );
+<<<<<<< HEAD
 for i = 1 : dim
+=======
+for i = 1:N
+>>>>>>> clement/master
 	C(i,i) = c(i) * X(i) * X(i);
 end
 
