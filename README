@@ -1,12 +1,7 @@
 This is project 1.
-<<<<<<< HEAD
-Only some comments
-=======
 Questions: 
 	what are our canditade numbers?
 
 Bugs: 
 	in improved steepest decent: after a few iterations alpha gets to small, and there are no more changes in the residual
 
-test
->>>>>>> clement/master

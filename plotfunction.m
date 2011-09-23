@@ -13,15 +13,8 @@ for i = 1 : size( x, 2 )
 end
 
 surf( x, y, Z )
-<<<<<<< HEAD
 shading('flat');
 xlabel( 'x_1' ); 
 ylabel( 'x_2' );
 zlabel( 'g(x_1, x_2)' );
 end
-=======
-
-xlabel( 'x_1' ); 
-ylabel( 'x_2' );
-zlabel( 'g(x_1, x_2)' );
->>>>>>> clement/master

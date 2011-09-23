@@ -25,4 +25,3 @@ hold on;
 plot3(Xk(1,:), Xk(2,:), problem(Xk));
 
 end
-
