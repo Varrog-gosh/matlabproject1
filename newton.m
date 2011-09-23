@@ -18,8 +18,10 @@ end
 condition = 1;
 norm_old = norm ( grad ( X ) );  % choose the norm || * ||_2
 
+residuals = zeros ( maxiterations );
 residuals = [ 1 ];
 
+g = zeros ( maxiterations );
 g = [ X ];
 
 dim = size ( g, 1 );
