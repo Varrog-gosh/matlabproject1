@@ -14,7 +14,7 @@ end
 
 surf( x, y, Z )
 shading('flat');
-xlabel( 'x_1' ); 
+xlabel( 'x_1' );
 ylabel( 'x_2' );
 zlabel( 'g(x_1, x_2)' );
 end

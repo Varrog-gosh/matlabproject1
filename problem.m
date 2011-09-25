@@ -9,7 +9,7 @@ for i = 1 : dim
 % =======
 % for i = 1:N
 % >>>>>>> clement/master
-	C(i,i) = c(i) * X(i) * X(i);
+C(i,i) = c(i) * X(i) * X(i);
 end
 
 g = - b' * X + 0.5 * X' * H * X + 1/12 * X' * C * X;

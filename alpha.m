@@ -1,4 +1,4 @@
-function [ alpha ] = alpha( X )
+function [ alpha_optimal ] = alpha( X )
 %GET_ALPHA Returns the optimal alpha for the steepest decend method
 % alpha is the solution of the equation a_0 + a_1 * α + a_2 * α^2 + a_3 * α^3
 
@@ -13,9 +13,9 @@ a3 = 0;
 a2 = 0;
 
 for i = 1 : dim
-	C(i,i) = c(i) * X(i)^2;
-	a3 = a3 + c(i) * gradg(i)^4;
-	a2 = a2 - c(i) * X(i) * gradg(i)^3;
+C(i,i) = c(i) * X(i)^2;
+a3 = a3 + c(i) * gradg(i)^4;
+a2 = a2 - c(i) * X(i) * gradg(i)^3;
 end
 
 a1 = gradg' * ( H + C ) * gradg;
@@ -26,9 +26,10 @@ alphas = roots( [ a3, a2, a1, a0 ] );
 
 % here the real alpha is chosen
 for i = 1 : 3
-	if imag ( alphas ( i ) ) == 0
-		alpha = alphas ( i );
-	end
+if imag ( alphas ( i ) ) == 0
+alpha_optimal = alphas ( i );
+end
+end
+alpha_optimal
 end
 
-end
