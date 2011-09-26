@@ -2,8 +2,8 @@ function plotfunction
 %PLOTFUNCTION plots the function in the Intervall -10 < x < 10 and -10 < y < 10
 %with a step size of 0.1.
 
-x = -10 : 0.1 : 10;
-y = -10 : 0.1 : 10;
+x = -5 : 0.1 : 5;
+y = -5 : 0.1 : 5;
 
 Z = zeros( size(x, 2), size(y, 2) );
 for i = 1 : size( x, 2 )
@@ -14,7 +14,7 @@ end
 
 surf( x, y, Z )
 shading('flat');
-xlabel( 'x_1' ); 
+xlabel( 'x_1' );
 ylabel( 'x_2' );
 zlabel( 'g(x_1, x_2)' );
 end
