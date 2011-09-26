@@ -2,17 +2,19 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{amssymb,amsmath,graphicx,listings}
-%\usepackage{uniinput}
+\usepackage{uniinput}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \renewcommand{\familydefault}{\sfdefault}
 \newcommand{\leadingzero}[1]{\ifnum #1<10 0\the#1\else\the#1\fi}
 \newcommand{\mytoday}{\leadingzero{\day}.\leadingzero{\month}.\the\year}
+\newcommand{\code}[1]{\textbf{#1}}
 
+\lstset{language=matlab, numbers=left,numberstyle=\footnotesize, basicstyle=\footnotesize}
 
 
 \begin{document}
 \title{Semester project TMA4215}
-\author{Candidate number\\ and\\ Canditate number two}
+\author{Candidate number one \\ and\\ Candidate number two}
 \date{\mytoday}
 \maketitle
 \newpage
@@ -21,41 +23,146 @@
 \section{Task}
 We consider minimization problems of the type
 \begin{align*}
-\min_{x \in R^n} g(\bf{x}), g(\bf{x}):=-\bf{b}^T\bf{x} + \frac12\bf{x}^TH\bf{x}+\frac1{12}\bf{x}^TC(\bf{x})\bf{x},
+\min_{{\bf x} \in \mathbb{R}^n} g({\bf x}),\,\, g({\bf x}):=-{\bf b}^T{\bf x} + \frac12{\bf x}^TH{\bf x}+\frac1{12}{\bf x}^TC({\bf x}){\bf x},
 \end{align*}
-here $\bf{b} \in \mathbb{R}^n$ and, $H$ is a $n \times n$ symmetric and positive definite matrix and $C(\bf{x})$ is a diagonal
+here ${\bf b} \in \mathbb{R}^n$ and, $H$ is a $n \times n$ symmetric and positive definite matrix and $C(\bf{x})$ is a diagonal
 matrix with diagonal entries $c_i x^2_i, i = 1, . . . , n$. 
 Here $c_i > 0$ are the components of a vector $\bf{c} \in \mathbb{R}^n$ 
 and $x_i$ are the components of $\bf{x}$. 
 \section{Generation of the data}
+The data is generated in the function \code{data}.
+$\bf{b}$ and $\bf{c}$ should be of the same dimension and $H$ should be a symmetric matrix which fits to the vectors.
+Line 6 can be used to check the dimensions of the input data, but this costs a lot of resources, because \code{data} is often called. 
+\begin{lstlisting}
+function [b, H, c] = data
+	b = [1; 0];
+	c = [1; 1];
+	H = [1, 1;
+	     1, 1];
+	% b' * H * c;
+end
+\end{lstlisting}
 
-\lstinputlisting{../data.m}
+\section{Function, gradient and Hessian of $g$}
 
-\section{Gradient and Hessian of $g$}
+\begin{lstlisting}
+function [ g ] =  ( X )
+	[ b, H, c ] = data;
+	dim = size(H,1);
+	C = zeros ( dim, dim );
+	for i = 1 : dim
+		C(i,i) = c(i) * X(i) * X(i);
+	end
+	g = - b' * X + 0.5 * X' * H * X + 1/12 * X' * C * X;
+end
+\end{lstlisting}
 
-\lstinputlisting{../problem.m}
-\lstinputlisting{../grad.m}
-\lstinputlisting{../hessian.m}
-\section{Existance of minimum}
-\begin{align*}
-\nabla^2g(x)=H+C
-\end{align*}
-Let $u\in R^n$, then
-$$u(\nabla^2g(x))u = u (H+C) u = u H u + uCu$$
-Because $H$ is positiv definit, $uHu>0$. 
-$$uCu = \sum_{i=1}^n u_i c_i x_i^2 u_i = \sum_{i=1}^n c_ix_i^2u_i^2$$
-Since $c_i>0$, $uCu>0$, so $u(\nabla^2g(x))u>0$ $\Rightarrow$ positive definit.
+\begin{align}\label{grad}
+{\bf\nabla} g = -{\bf b} + H{\bf x} + \frac13C{\bf x}
+\end{align}
+
+\begin{lstlisting}
+function [ nablaG ] = grad( X )
+	[ b, H, c ] = data;
+	dim = size ( H, 1 );
+	for i = 1 : dim
+	    C(i,i) = c(i) * X(i) * X(i);
+	end
+	nablaG = - b + H * X + 1/3 * C * X;
+end
+\end{lstlisting}
+
+\begin{align}\label{hess}
+{\bf\nabla}^2 g =  H + C
+\end{align}
+
+\begin{lstlisting}
+function [ HessG ] = hessian( X )
+	[ ~, H, c ] = data;
+	dim = size ( H, 1 );
+	C = zeros ( dim, dim );
+	for i = 1 : dim
+		C(i,i) = c(i) * X(i) * X(i);
+	end
+	HessG = H + C;
+end
+\end{lstlisting}
+
+
+\section{Existence of minimum}
+Let $u\in R^n$ be an arbitrary vector, except $\vec{0}$ then
+$$u(\nabla^2g(x))u = u (H+C) u = u H u + uCu = uHu + \sum_{i=1}^n c_iu_i^2x_i^2.$$
+Since $H$ is positive definite, $uHu>0$ and because $c_i>0$, $uCu>0$, so 
+$$u(\nabla^2g(x))u>0$$ 
+That means that the Hessian of $g$ is positive definite.
 \section{Plot for $n=2$}
 
 \section{Steepest decent method}
+\begin{lstlisting}
+function [ iterations, X, Y, Z ] = steepest( Xk, alpha )
+	tol = 1e-6;
+	maxiterations = 1000;
+	[~,H,~] = data;
+	dim = size(H, 1);
+	X1 = zeros(1, maxiterations);
+	X2 = zeros(1, maxiterations);
+	Y = zeros(1, maxiterations);
+	Z = zeros(1, maxiterations);
+	X1(1) = Xk(1);
+	X2(1) = Xk(2);
+	condition = 1;
+	norm_old = norm ( grad ( Xk) );
+	Y(1) = norm_old;
+	Z(1) = problem(Xk);
+	while condition
+		maxiterations = maxiterations - 1;
+		Xk = Xk - alpha * grad ( Xk );
+		if dim == 2
+				X1(1000-maxiterations+1) = Xk(1);
+				X2(1000-maxiterations+1) = Xk(2);
+		end
+		residual = norm ( grad ( Xk ) ) / norm_old;
+		Y(1000-maxiterations+1) = residual;
+		Z(1000-maxiterations+1) = problem(Xk);
+		condition = (maxiterations > 0) && ( residual > tol);
+	end
+	X1 = X1(1:1000-maxiterations+1);
+	X2 = X2(1:1000-maxiterations+1);
+	X = [X1;X2];
+	iterations = (1:1:1000-maxiterations+1);
+	Z = Z(1:1000-maxiterations+1);
+	Y = Y(1:1000-maxiterations+1);
+end
+\end{lstlisting}
 
 \section{Equivalence of steepest decent method and forward Euler method}
-
+No idea.
 \section{Improved steepest decent method}
+To find the optimal $α$,
+$$
+g\left({\bf x}^{(k+1)}\right) = g \left({\bf x}^{(k)} - α^{(k)} \nabla g({\bf x}^{(k+1)})\right)
+$$
+has to be minimal, so $\frac{∂}{∂αo g({\bf x}^{(k+1)})$  has to be zero.
+This leads to the equation
+\begin{align*}
+&\left( {\bf b}{\bf \nabla} g - {\bf x}H{\bf x} - \frac13 {\bf x}  H  {\bf \nabla} g\right)
+ + \left( ({\bf \nabla} g) ( H + C) {\bf \nabla} g \right)α
+\\+ &\left( - \sum_{i=1}^n c_i  x_i  ({\bf \nabla} g)_i^3 \right)α^2
++ \left( \sum_{i=1}^n c_i  ({\bf \nabla} g)_i^4\right)α^3 = 0
+\end{align*}
+\begin{lstlisting}
+
+\end{lstlisting}
 
 \section{Newton method}
+\begin{lstlisting}
+
+\end{lstlisting}
 
 \section{Combination of steepest decent methode and Newton method}
+\begin{lstlisting}
+
+\end{lstlisting}
 
 
 \end{document}

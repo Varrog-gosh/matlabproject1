@@ -1,4 +1,4 @@
-function [ alpha ] = alpha( X )
+function [ alpha_optimal ] = alpha( X )
 %GET_ALPHA Returns the optimal alpha for the steepest decend method
 % alpha is the solution of the equation a_0 + a_1 * α + a_2 * α^2 + a_3 * α^3
 
@@ -27,8 +27,8 @@ alphas = roots( [ a3, a2, a1, a0 ] );
 % here the real alpha is chosen
 for i = 1 : 3
 	if imag ( alphas ( i ) ) == 0
-		alpha = alphas ( i );
+		alpha_optimal = alphas ( i );
 	end
 end
-
 end
+

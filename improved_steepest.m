@@ -13,6 +13,5 @@ while condition
 	residual = norm ( grad ( X ) ) / norm_old;
 	condition = (maxiterations > 0) && ( residual > tol);
 end
-
 end
 
