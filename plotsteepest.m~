@@ -1,4 +1,4 @@
-function plotsteepest(X, alph, tol, nbiterations)
+function plotsteepest(X, tol, nbiterations, alph)
 
 [iterations, Xk, Y, Z] = steepest(X, alph, tol, nbiterations);
 [ ~, H, ~] = data;
@@ -42,13 +42,11 @@ if dim == 2
     plot3(Xk(1,:), Xk(2,:), G, 'g-o');
     
     
-    
-    [iterations, Xk, ~, ~] = newton(X, tol, nbiterations);
     G = zeros(1:1:size(iterations)); % Plot newton method on the same graph
     for i=size(iterations);
         G(i) = problem([Xk(1,i); Xk(2,i)]);
     end
-    plot3(Xk(1,:), Xk(2,:), G, 'y-+');
+    plot3(Xk(1,:), Xk(2,:), G, 'r-*');
     
 end
 

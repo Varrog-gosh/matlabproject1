@@ -19,16 +19,16 @@ Z(1) = problem(Xk);
 
 
 while condition
-maxiterations = maxiterations - 1;
-Xk = Xk - alpha * grad ( Xk );
-if dim == 2
-X1(nbiterations-maxiterations+1) = Xk(1);
-X2(nbiterations-maxiterations+1) = Xk(2);
-end
-residual = norm ( grad ( Xk ) ) / norm_old;
-Y(nbiterations-maxiterations+1) = residual;
-Z(nbiterations-maxiterations+1) = problem(Xk);
-condition = (maxiterations > 0) && ( residual > tol);
+    maxiterations = maxiterations - 1;
+    Xk = Xk - alpha * grad ( Xk );
+    if dim == 2
+        X1(nbiterations-maxiterations+1) = Xk(1);
+        X2(nbiterations-maxiterations+1) = Xk(2);
+    end
+    residual = norm ( grad ( Xk ) ) / norm_old;
+    Y(nbiterations-maxiterations+1) = residual;
+    Z(nbiterations-maxiterations+1) = problem(Xk);
+    condition = (maxiterations > 0) && ( residual > tol);
 end
 X1 = X1(1:nbiterations-maxiterations+1);
 X2 = X2(1:nbiterations-maxiterations+1);

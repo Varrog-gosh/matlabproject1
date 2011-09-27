@@ -9,10 +9,10 @@ norm_old = norm ( grad ( Xk) );
 
 
 while condition
-maxiterations = maxiterations - 1;
-Xk = Xk - alpha * grad ( Xk );
-residual = norm ( grad ( Xk ) ) / norm_old;
-condition = (maxiterations > 0) && ( residual > tol);
+    maxiterations = maxiterations - 1;
+    Xk = Xk - alpha * grad ( Xk );
+    residual = norm ( grad ( Xk ) ) / norm_old;
+    condition = (maxiterations > 0) && ( residual > tol);
 end
 
 
