@@ -7,7 +7,7 @@ dim = size(H, 2);
 %plot which shows how the residual decreases with the number of iteratives
 
 grid;
-plot(iterations, Y);
+semilogy(iterations, Y);
 xlabel('Iterations');
 ylabel('Relative residual');
 

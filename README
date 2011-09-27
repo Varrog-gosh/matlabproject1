@@ -1,7 +1,14 @@
 This is project 1.
 Questions: 
 	what are our canditade numbers?
+	is the formular for alpha correct?
+	should we really use the discriminant \Delta for seeing that there is only one real root for alpah?
+		this is a lot of work
+	are the calculations in our protocol enought, or do we need more?
 
 Bugs: 
 	in improved steepest decent: after a few iterations alpha gets to small, and there are no more changes in the residual
 
+In the report : 
+       We have to change, in the question 4, we have to talk about u^TCu and u^THu, it is important to write transpose. 8but it changes absolutely nothing in the proof)
+       The 3 plots here are for the answer at the question e. On the plot with two alphas, the green is the optimal. That is a part af the answer of g.
