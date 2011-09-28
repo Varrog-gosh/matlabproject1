@@ -6,8 +6,9 @@ dim = size(H, 2);
 
 %plot which shows how the residual decreases with the number of iteratives
 
-grid;
+
 semilogy(iterations, Y);
+grid;
 xlabel('Iterations');
 ylabel('Relative residual');
 
@@ -30,11 +31,11 @@ if dim == 2
     for i=size(iterations);
         G(i) = problem([Xk(1,i); Xk(2,i)]);
     end
-    plot3(Xk(1,:), Xk(2,:), G, 'r-*');
+    plot3(Xk(1,:), Xk(2,:), G, 'r-o');
     
         
-    alphaop = alpha(X); %plot steepest method with optimal alpha
-    [iterations, Xk, ~, ~] = steepest(X, alphaop, tol, nbiterations);
+    alpha = alphaop(X); %plot steepest method with optimal alpha
+    [iterations, Xk, ~, ~] = steepest(X, alpha, tol, nbiterations);
     G = zeros(1:1:size(iterations));
     for i=size(iterations);
         G(i) = problem([Xk(1,i); Xk(2,i)]);

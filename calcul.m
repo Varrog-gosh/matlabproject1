@@ -14,7 +14,7 @@ time1 = time/iterations;
 time = 0;
 for i=1:iterations
     tic;
-    [~, residual2] = steepest_calcul(a, alpha(a), tol, it);
+    [~, residual2] = steepest_calcul(a, alphaop(a), tol, it);
     time = time + toc;
 end
 time2 = time/iterations;

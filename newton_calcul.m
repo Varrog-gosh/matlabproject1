@@ -12,7 +12,7 @@ elseif nargin == 3
 else
     % this should not happen. Print error message
     'function newton wants 1 or 3 input values'
-return
+    return
 end
 
 maxiterations = nbiterations;
@@ -20,10 +20,10 @@ condition = 1;
 norm_old = norm ( grad ( Xk) );
 
 while condition % the condition is calculated at the end of the while loop, because there should at least one iteration
-maxiterations = maxiterations - 1; % count from the maximum number of iterations to zero
-Xk = Xk - linsolve( hessian ( Xk ), grad ( Xk ) ); % the algorithm of the newton method
-residual = norm( grad ( Xk ) ) / norm_old; % the residual
-condition = ( maxiterations > 0 ) && ( residual > tol );
+    maxiterations = maxiterations - 1; % count from the maximum number of iterations to zero
+    Xk = Xk - linsolve( hessian ( Xk ), grad ( Xk ) ); % the algorithm of the newton method
+    residual = norm( grad ( Xk ) ) / norm_old; % the residual
+    condition = ( maxiterations > 0 ) && ( residual > tol );
 end
 
 end
