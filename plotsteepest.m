@@ -43,12 +43,12 @@ if dim == 2
     
     
     
-    [iterations, Xk, ~, ~] = newton(X, tol, nbiterations);
+    [iterations, Xk] = newton(X, tol, nbiterations);
     G = zeros(1:1:size(iterations)); % Plot newton method on the same graph
     for i=size(iterations);
         G(i) = problem([Xk(1,i); Xk(2,i)]);
     end
-    plot3(Xk(1,:), Xk(2,:), G, 'y-+');
+    plot3(Xk(1,:), Xk(2,:), G, 'k-+');
     
 end
 

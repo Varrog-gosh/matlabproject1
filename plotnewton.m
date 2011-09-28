@@ -1,23 +1,7 @@
-function plotnewton( iterations, Xk, Y, Z )
+function plotnewton( iterations, Xk)
 
 [ ~, H, ~] = data;
 dim = size(H, 2);
-
-%plot which shows how the residual decreases with the number of iteratives
-
-grid;
-plot(iterations, Y);
-xlabel('Iterations');
-ylabel('Relative residual');
-
-%plot which shows how G decreases with the iterations
-
-figure;
-hold off;
-plot(iterations, Z);
-xlabel('Iterations');
-ylabel('g');
-grid;
 
 %plot which shows the iterations on the surface of G
 if dim == 2

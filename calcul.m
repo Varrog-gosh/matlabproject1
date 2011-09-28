@@ -6,7 +6,7 @@ iterations = 1000;
 
 for i=1:iterations
     tic;
-    [~, residual1] = steepest_calcul(a, 0.0001, tol, it);
+    [~, residual1] = steepest_calcul(a, 0.00001, tol, it);
     time = time + toc;
 end
 time1 = time/iterations;
