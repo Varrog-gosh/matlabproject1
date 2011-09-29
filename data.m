@@ -6,7 +6,7 @@ function [b, H, c] = data
 % and H a square matrix, with the same size than b or c.
 
 b = [ 1; 0];
-c = [ 1; 1];
-H = [ 1, 1 ; 1, 1];
+c = [ 200; 400];
+H = [ 200, 999 ; 999, 200];
 
 end
