@@ -1,6 +1,6 @@
 This is project 1.
 Questions: 
-	what are our canditade numbers?
+	what are our canditade numbers? => You can find it on student web. Here is mine : 728387.
 	is the formular for alpha correct?
 	should we really use the discriminant \Delta for seeing that there is only one real root for alpah?
 		this is a lot of work
@@ -9,3 +9,9 @@ Questions:
 Bugs: 
 	in improved steepest decent: after a few iterations alpha gets to small, and there are no more changes in the residual
 
+In the report : 
+       We have to change, in the question 4, we have to talk about u^TCu and u^THu, it is important to write transpose. But it changes absolutely nothing in the proof)
+       The 3 plots here are for the answer at the question e. On the plot with two alphas, the green is the optimal. That is a part af the answer of g.
+       	  Here is the comment of the table of the question i. 
+	       "All the values of the table are average values of a 1000 values sample, calculated from the starting point [4;-1]. As we can see, regardless of the tolerance and the maximun number of iterations, Newton's method is the fastest method. When we have a large number of iterations, the combination of steepest and Newton's method is the most precise (smallest residual). For this last method, the precision is increasing while the tolerance is decreasing but obviously, the cputime increases too. The first method, steepest descent with arbitrary alpha appears to be the worst method. Indeed, the cputime and the residual are greater there. But, what is the interest of steepest method with the optimal alpha ? Actually, this method gives us a precise idea of where is the minimum of the function, without being very precise. The Newton's method can give us the same idea, but if we start far from the answer, the time of execution will be very higher. Moreover, if there are several points where the gradient equals to zero, we can't be sure that we are precisely in a global minimum or a local extremum. That is why it seems to be very useful to combine the two methods, because with the steepest descent we approach the solution to a certain point (and we are sure that is the solution) and with the Newton's method applied to this point we can go much more closer to the minimum. For instance, here with the tolerance 10e-6 and 1000 iterations, the precision of the Newton-steepest method is 1 million times more precise than the Newton's method alone. 
+	       As a conclusion, we have to choose the method accorded to the result we expect : if we just want a quick idea of the solution, we can just use the steepest descent with an alpha, arbitrary or optimal. But, if we prefer to be certain of the solution, we have to mix Newton's and steespest methods. The Newton's method is between the last ones : very fast and quite precise but we cannot be completely sure of the solution, given that it will converge to the closest zero." 

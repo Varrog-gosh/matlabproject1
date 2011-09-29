@@ -15,18 +15,15 @@ hold on;
 semilogy(iterations2, Y2, 'g');
 semilogy(iterations3, Y3, 'b');
 grid;
-legend('Steepest method with arbitrary alpha','Steepest method with optimal alpha', 'Newton method');
+legend('g', 'Steepest method with arbitrary alpha','Steepest method with optimal alpha', 'Newton method');
 xlabel('Iterations');
 ylabel('Relative residual');
 
 %plot which shows how G decreases with the iterations
 
 figure;
-hold on;
-semilogy(iterations1, Z1, 'r');
-semilogy(iterations2, Z2, 'g');
-semilogy(iterations3, Z3, 'b');
-legend('Steepest method with arbitrary alpha','Steepest method with optimal alpha', 'Newton method');
+hold off;
+semilogy(iterations1, Z1);
 xlabel('Iterations');
 ylabel('g');
 grid;
