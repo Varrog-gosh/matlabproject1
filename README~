@@ -1,13 +1,6 @@
 This is project 1.
 Questions: 
 	what are our canditade numbers?
-=======
-	what are our canditade numbers? => You can find it on student web. Here is mine : 728387.
->>>>>>> clement/master
-	is the formular for alpha correct?
-	should we really use the discriminant \Delta for seeing that there is only one real root for alpah?
-		this is a lot of work
-	are the calculations in our protocol enought, or do we need more?
 
 Bugs: 
 	in improved steepest decent: after a few iterations alpha gets to small, and there are no more changes in the residual
