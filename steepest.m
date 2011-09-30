@@ -1,4 +1,4 @@
-function [ iterations, X, Y, Z ] = steepest( Xk, alpha, tol, nbiterations )
+function [ iteration, xArray, Y, Z ] = steepest( Xk, alpha, tol, nbiterations )
 %STEEPEST Find a local minimum iteratively with the initial guess x0, returns 4 variables for ploting the function :
 % iteration is a vector with the numbers of iterations, X is a vector which contains all the iterations, Y is a vector which contains all the residual values and Z is the vector wich contain all the values of G along the iterations
 

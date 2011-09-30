@@ -1,13 +1,18 @@
-function [ HessG ] = hessian( X )
-%HESSG Return the heesian of the function G of the project
+function [ hessG ] = hessian( X )
+%HESSG Return the hessian of the function G of the project
+% INPUT
+%  X	The point where the hessian should be calculated
+% OUTPUT
+%  hessG	The hessian at a given point
 
 [ ~, H, c ] = data;
 dim = size ( H, 1 );
 C = zeros ( dim, dim );
+
 for i = 1 : dim
-    C(i,i) = c(i) * X(i) * X(i);
+	C(i,i) = c(i) * X(i) * X(i);
 end
 
-HessG = H + C;
+hessG = H + C;
 
 end

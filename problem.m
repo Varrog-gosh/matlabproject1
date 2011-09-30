@@ -4,9 +4,9 @@ function [ g ] = problem ( X )
 [ b, H, c ] = data;
 dim = size(H,1);
 C = zeros ( dim, dim );
-for i = 1 : dim
 
-C(i,i) = c(i) * X(i) * X(i);
+for i = 1 : dim
+	C(i,i) = c(i) * X(i) * X(i);
 end
 
 g = - b' * X + 0.5 * X' * H * X + 1/12 * X' * C * X;

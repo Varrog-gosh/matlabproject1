@@ -14,7 +14,7 @@
 
 \begin{document}
 \title{Semester project TMA4215}
-\author{Candidate number one \\ and\\ Candidate number two}
+\author{10068\\ and\\ 728387}
 \date{\mytoday}
 \maketitle
 \newpage
@@ -27,8 +27,10 @@ We consider minimization problems of the type
 \end{align*}
 here ${\bf b} \in \mathbb{R}^n$ and, $H$ is a $n \times n$ symmetric and positive definite matrix and $C(\bf{x})$ is a diagonal
 matrix with diagonal entries $c_i x^2_i, i = 1, . . . , n$. 
-Here $c_i > 0$ are the components of a vector $\bf{c} \in \mathbb{R}^n$ 
+Here $c_i > 0$ are the components of a vector ${\bf c} \in \mathbb{R}^n$ 
 and $x_i$ are the components of $\bf{x}$. 
+
+
 \section{Generation of the data}
 The data is generated in the function \code{data}.
 $\bf{b}$ and $\bf{c}$ should be of the same dimension and $H$ should be a symmetric matrix which fits to the vectors.
@@ -57,6 +59,7 @@ function [ g ] =  ( X )
 end
 \end{lstlisting}
 
+a short calculation 
 \begin{align}\label{grad}
 {\bf\nabla} g = -{\bf b} + H{\bf x} + \frac13C{\bf x}
 \end{align}
@@ -72,6 +75,7 @@ function [ nablaG ] = grad( X )
 end
 \end{lstlisting}
 
+ore one line of explanation
 \begin{align}\label{hess}
 {\bf\nabla}^2 g =  H + C
 \end{align}
@@ -91,9 +95,9 @@ end
 
 \section{Existence of minimum}
 Let $u\in R^n$ be an arbitrary vector, except $\vec{0}$ then
-$$u(\nabla^2g(x))u = u (H+C) u = u H u + uCu = uHu + \sum_{i=1}^n c_iu_i^2x_i^2.$$
-Since $H$ is positive definite, $uHu>0$ and because $c_i>0$, $uCu>0$, so 
-$$u(\nabla^2g(x))u>0$$ 
+$$u^T(\nabla^2g(x))u = u^T (H+C) u = u^T H u + u^TCu = u^THu + \sum_{i=1}^n c_iu_i^2x_i^2.$$
+Since $H$ is positive definite, $u^THu>0$ and because $c_i>0$, $u^TCu>0$, so 
+$$u^T(\nabla^2g(x))u>0$$ 
 That means that the Hessian of $g$ is positive definite.
 \section{Plot for $n=2$}
 
@@ -142,7 +146,7 @@ To find the optimal $α$,
 $$
 g\left({\bf x}^{(k+1)}\right) = g \left({\bf x}^{(k)} - α^{(k)} \nabla g({\bf x}^{(k+1)})\right)
 $$
-has to be minimal, so $\frac{∂}{∂αo g({\bf x}^{(k+1)})$  has to be zero.
+has to be minimal, so $\frac{∂}{∂α} g({\bf x}^{(k+1)})$  has to be zero.
 This leads to the equation
 \begin{align*}
 &\left( {\bf b}{\bf \nabla} g - {\bf x}H{\bf x} - \frac13 {\bf x}  H  {\bf \nabla} g\right)
@@ -150,6 +154,8 @@ This leads to the equation
 \\+ &\left( - \sum_{i=1}^n c_i  x_i  ({\bf \nabla} g)_i^3 \right)α^2
 + \left( \sum_{i=1}^n c_i  ({\bf \nabla} g)_i^4\right)α^3 = 0
 \end{align*}
+Because the function is cubic, there has to be at least one real zero.
+The function is always rising. so only one zero is possible
 \begin{lstlisting}
 
 \end{lstlisting}
@@ -163,6 +169,22 @@ This leads to the equation
 \begin{lstlisting}
 
 \end{lstlisting}
+All the values of the table are average values of a 1000 values sample, calculated from the starting point [4;-1].
+As we can see, regardless of the tolerance and the maximun number of iterations, Newton's method is the fastest method. 
+When we have a large number of iterations, the combination of steepest and Newton's method is the most precise (smallest residual). 
+For this last method, the precision is increasing while the tolerance is decreasing but obviously, the cputime increases too.
+The first method, steepest descent with arbitrary alpha appears to be the worst method. Indeed, the cputime and the residual are greater there. 
+But, what is the interest of steepest method with the optimal alpha ? 
+Actually, this method gives us a precise idea of where is the minimum of the function, without being very precise. 
+The Newton's method can give us the same idea, but if we start far from the answer, the time of execution will be very higher. 
+Moreover, if there are several points where the gradient equals to zero, we can't be sure that we are precisely in a global minimum or a local extremum. 
+That is why it seems to be very useful to combine the two methods, because with the steepest descent we approach the solution to a certain point (and we are sure that is the solution) and with the Newton's method applied to this point we can go much more closer to the minimum. 
+For instance, here with the tolerance 10e-6 and 1000 iterations, the precision of the Newton-steepest method is 1 million times more precise than the Newton's method alone. 
 
+
+ As a conclusion, we have to choose the method accorded to the result we expect :
+ if we just want a quick idea of the solution, we can just use the steepest descent with an alpha, arbitrary or optimal. But, if we prefer to be certain of the solution, we have to mix Newton's and steespest methods.
+The Newton's method is between the last ones : 
+very fast and quite precise but we cannot be completely sure of the solution, given that it will converge to the closest zero." 
 
 \end{document}
