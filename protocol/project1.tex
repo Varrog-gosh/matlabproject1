@@ -7,17 +7,17 @@
 \renewcommand{\familydefault}{\sfdefault}
 \newcommand{\leadingzero}[1]{\ifnum #1<10 0\the#1\else\the#1\fi}
 \newcommand{\mytoday}{\leadingzero{\day}.\leadingzero{\month}.\the\year}
-\newcommand{\code}[1]{\textbf{#1}}
+\newcommand{\code}[1]{\textit{#1}}
 
 \lstset{language=matlab, numbers=left,numberstyle=\footnotesize, basicstyle=\footnotesize}
 
 
 \begin{document}
 \title{Semester project TMA4215}
-\author{10068\\ and\\ 728387}
+\author{10068 and 728387}
 \date{\mytoday}
 \maketitle
-\newpage
+%\newpage
 
 
 \section{Task}
@@ -30,25 +30,81 @@ matrix with diagonal entries $c_i x^2_i, i = 1, . . . , n$.
 Here $c_i > 0$ are the components of a vector ${\bf c} \in \mathbb{R}^n$ 
 and $x_i$ are the components of $\bf{x}$. 
 
+\section{Mathematical calculations}
+At first some calculations are done.
+\subsection{Positive definition of $H$}
+Since we use only one $H$, the proof is not generally, but only for one special matrix.
+Let $u=\begin{pmatrix}u_1\\u_2\end{pmatrix}\in \mathbb{R}^2$, and $H= \begin{pmatrix} a&b\\b&c\end{pmatrix}$, with $a,c>0$.
+\begin{align*}
+{\bf u}^TH{\bf u} = au_1^2 + cu_2^2 + 2 b u_1u_2
+\end{align*}
+If we choose $b = \sqrt{a}\sqrt{c}$, we get
+$$ = (\sqrt{a}u_1+\sqrt{c}u_1)^2 >0,$$
+no matter what ${\bf u}$ is. 
+$H$ is positive definite with this choice of $b$.
 
-\section{Generation of the data}
+\subsection{Gradient}
+The gradient can easily be calculated with sums.
+\begin{align*}
+{\bf\nabla} g 
+&= {\bf \nabla}\left(-\sum_{i=1}^nb_ix_i +\frac12\sum_{i=1}^n\sum_{j=1}^n H_{ij}x_ix_j + \frac1{12}\sum_{i=1}^n c_i x_i^4\right)
+\end{align*}
+The two sums in the middle are divided into the diagonal element and the not diagonal elements.
+All not diagonal elements are there twice, because $H$ is symmetric and therefore $H_{ij} = H_{ji}$ .
+\begin{align*}
+&= {\bf \nabla}\left(-\sum_{i=1}^nb_ix_i +\frac12\sum_{i=1}^n H_{ii}x_i^2 + \sum_{i=1}^n\sum_{j=1}^{i-1} H_{ij}x_ix_j + \frac1{12}\sum_{i=1}^n c_i x_i^4\right)
+\\&= -{\bf b} + H{\bf x} + \frac13C{\bf x}
+\end{align*}
+
+\subsection{Hessian}
+The Hessian of $g$ is easily calculable:
+\begin{align*}
+{\bf\nabla}^2 g =  H + C
+\end{align*}
+
+\subsection{Existence of minimum}
+Let $u\in R^n$ be an arbitrary vector, except $\vec{0}$ then
+$$u^T(\nabla^2g(x))u = u^T (H+C) u = u^T H u + u^TCu = u^THu + \sum_{i=1}^n c_iu_i^2x_i^2.$$
+Since $H$ is positive definite, $u^THu>0$ and because $c_i>0$, $u^TCu>0$, so 
+$$u^T(\nabla^2g(x))u>0$$ 
+That means that the Hessian of $g$ is positive definite and therefore strictly convex and has at most one local minimum.
+
+\subsection{Equivalence of steepest decent method and forward Euler method}
+
+
+\subsection{Optimal $α$ in the steepest decent method}\label{calcalpha}
+To find the optimal $α$,
+$$
+g\left({\bf x}^{(k+1)}\right) = g \left({\bf x}^{(k)} - α^{(k)} \nabla g({\bf x}^{(k+1)})\right)
+$$
+has to be minimal, so $\frac{∂}{∂α} g({\bf x}^{(k+1)})$  has to be zero.
+This leads to the equation
+\begin{align*}
+&\left( {\bf b}{\bf \nabla} g - {\bf x}H{\bf x} - \frac13 {\bf x}  H  {\bf \nabla} g\right)
+ + \left( ({\bf \nabla} g) ( H + C) {\bf \nabla} g \right)α
+\\+ &\left( - \sum_{i=1}^n c_i  x_i  ({\bf \nabla} g)_i^3 \right)α^2
++ \left( \sum_{i=1}^n c_i  ({\bf \nabla} g)_i^4\right)α^3 
+\\ = a_0 + a_1 α + a_2 ο^2 + a_3cα^3= 0
+\end{align*}
+Because the function is cubic, there has to be at least one real zero.
+The function is always rising. So only one zero is possible
+
+
+\section{Main algorithms}
+\subsection{Generation of the data}
 The data is generated in the function \code{data}.
-$\bf{b}$ and $\bf{c}$ should be of the same dimension and $H$ should be a symmetric matrix which fits to the vectors.
-Line 6 can be used to check the dimensions of the input data, but this costs a lot of resources, because \code{data} is often called. 
 \begin{lstlisting}
-function [b, H, c] = data
-	b = [1; 0];
-	c = [1; 1];
-	H = [1, 1;
-	     1, 1];
-	% b' * H * c;
+function [ b, H, c ] = data
+	b = [ 1; 0 ];
+	c = [ 200; 400 ];
+	H = [ 200, 200 ; 200, 200 ];
 end
 \end{lstlisting}
 
-\section{Function, gradient and Hessian of $g$}
+\subsection{Function, gradient and Hessian of $g$}
 
 \begin{lstlisting}
-function [ g ] =  ( X )
+function [ g ] = g ( X )
 	[ b, H, c ] = data;
 	dim = size(H,1);
 	C = zeros ( dim, dim );
@@ -58,11 +114,6 @@ function [ g ] =  ( X )
 	g = - b' * X + 0.5 * X' * H * X + 1/12 * X' * C * X;
 end
 \end{lstlisting}
-
-a short calculation 
-\begin{align}\label{grad}
-{\bf\nabla} g = -{\bf b} + H{\bf x} + \frac13C{\bf x}
-\end{align}
 
 \begin{lstlisting}
 function [ nablaG ] = grad( X )
@@ -75,100 +126,82 @@ function [ nablaG ] = grad( X )
 end
 \end{lstlisting}
 
-ore one line of explanation
-\begin{align}\label{hess}
-{\bf\nabla}^2 g =  H + C
-\end{align}
-
 \begin{lstlisting}
-function [ HessG ] = hessian( X )
+function [ hessG ] = hessian( X )
 	[ ~, H, c ] = data;
 	dim = size ( H, 1 );
 	C = zeros ( dim, dim );
 	for i = 1 : dim
 		C(i,i) = c(i) * X(i) * X(i);
 	end
-	HessG = H + C;
+	hessG = H + C;
 end
 \end{lstlisting}
 
-
-\section{Existence of minimum}
-Let $u\in R^n$ be an arbitrary vector, except $\vec{0}$ then
-$$u^T(\nabla^2g(x))u = u^T (H+C) u = u^T H u + u^TCu = u^THu + \sum_{i=1}^n c_iu_i^2x_i^2.$$
-Since $H$ is positive definite, $u^THu>0$ and because $c_i>0$, $u^TCu>0$, so 
-$$u^T(\nabla^2g(x))u>0$$ 
-That means that the Hessian of $g$ is positive definite.
-\section{Plot for $n=2$}
-
-\section{Steepest decent method}
+\subsection{Minimum searching algorithm}
+All methods work similar. 
+The only line which has to be changed is line 9.
+The real implementation is more complicated and is shown in the next chapter.
 \begin{lstlisting}
-function [ iterations, X, Y, Z ] = steepest( Xk, alpha )
-	tol = 1e-6;
-	maxiterations = 1000;
-	[~,H,~] = data;
-	dim = size(H, 1);
-	X1 = zeros(1, maxiterations);
-	X2 = zeros(1, maxiterations);
-	Y = zeros(1, maxiterations);
-	Z = zeros(1, maxiterations);
-	X1(1) = Xk(1);
-	X2(1) = Xk(2);
-	condition = 1;
-	norm_old = norm ( grad ( Xk) );
-	Y(1) = norm_old;
-	Z(1) = problem(Xk);
-	while condition
-		maxiterations = maxiterations - 1;
-		Xk = Xk - alpha * grad ( Xk );
-		if dim == 2
-				X1(1000-maxiterations+1) = Xk(1);
-				X2(1000-maxiterations+1) = Xk(2);
-		end
-		residual = norm ( grad ( Xk ) ) / norm_old;
-		Y(1000-maxiterations+1) = residual;
-		Z(1000-maxiterations+1) = problem(Xk);
-		condition = (maxiterations > 0) && ( residual > tol);
+X = [ 4; -1 ];
+maxiterations = 1000;
+tol = 1e-6;
+
+norm_old = norm ( grad ( X) );
+condition = 1;
+while condition
+	maxiterations = maxiterations - 1;
+	X = X - alpha * grad ( X ); % steepest decent method with constant alpha
+	% X = X - optimalAlpha ( X ) * grad ( X ); % with optimal alpha
+	% X = X - linsolve ( hessian ( X ), grad ( X ) ); % newton method
+	residual = norm ( grad ( X ) ) / norm_old;
+	condition = (maxiterations > 0) && ( residual > tol);
+end
+\end{lstlisting}
+
+\subsection{Computation of α}
+For the calculation of α see chapter \ref{calcalpha}.
+\begin{lstlisting}
+function [ alpha_optimal ] = optimalAlpha( X )
+[ b, H, c] = data;
+dim = size ( H, 2 );
+C = zeros ( dim, dim );
+gradg = grad ( X );
+a3 = 0;
+a2 = 0;
+for i = 1 : dim
+	C(i,i) = c(i) * X(i)^2;
+	a3 = a3 + c(i) * gradg(i)^4;
+	a2 = a2 - c(i) * X(i) * gradg(i)^3;
+end
+a1 = gradg' * ( H + C ) * gradg;
+a0 = b'*gradg - X' * H * X - 1/3 * X' * H * gradg;
+alphas = roots( [ a3, a2, a1, a0 ] );
+for i = 1 : 3
+	if imag ( alphas ( i ) ) == 0
+		alpha_optimal = alphas ( i );
 	end
-	X1 = X1(1:1000-maxiterations+1);
-	X2 = X2(1:1000-maxiterations+1);
-	X = [X1;X2];
-	iterations = (1:1:1000-maxiterations+1);
-	Z = Z(1:1000-maxiterations+1);
-	Y = Y(1:1000-maxiterations+1);
+end
 end
 \end{lstlisting}
+ 
+\section{Structure of the project}
+There are two main methods, \code{compareCPU} and \code{plotAll}, which are pretty similar.
+The functions called by \code{plotAll} return the necessary data to generate graphs, and the functions called by \code{compareCPU} is optimized to get the CPU time.
 
-\section{Equivalence of steepest decent method and forward Euler method}
-No idea.
-\section{Improved steepest decent method}
-To find the optimal $α$,
-$$
-g\left({\bf x}^{(k+1)}\right) = g \left({\bf x}^{(k)} - α^{(k)} \nabla g({\bf x}^{(k+1)})\right)
-$$
-has to be minimal, so $\frac{∂}{∂α} g({\bf x}^{(k+1)})$  has to be zero.
-This leads to the equation
-\begin{align*}
-&\left( {\bf b}{\bf \nabla} g - {\bf x}H{\bf x} - \frac13 {\bf x}  H  {\bf \nabla} g\right)
- + \left( ({\bf \nabla} g) ( H + C) {\bf \nabla} g \right)α
-\\+ &\left( - \sum_{i=1}^n c_i  x_i  ({\bf \nabla} g)_i^3 \right)α^2
-+ \left( \sum_{i=1}^n c_i  ({\bf \nabla} g)_i^4\right)α^3 = 0
-\end{align*}
-Because the function is cubic, there has to be at least one real zero.
-The function is always rising. so only one zero is possible
-\begin{lstlisting}
+\subsection{\code{compareCPU}}
+In this method the maximal number of iterations, the tolerance and the starting point is defined.
+\code{compareCPU} calls the function \code{fastmethod} with different parameters named \code{method}.
+If this parameter is \code{steepest-newton}, first steepest decent method is called, then the newton method.
+If this parameter is \code{newton}, \code{steepest} or a number, the line 9 of the last code fragment is changed with the method delta. 
+If a number is given, it is used as step size for the steepest decent method with constant α.
+\subsection{\code{plotAll}}
+In this method there are the same definitions as in \code{compareCPU}.
+Then it calls the function \code{plot}, which does nearly the same as \code{fastmethod}, except it does not count the CPU time, but returns the information to generate the graphs.
 
-\end{lstlisting}
+\section{Results}
 
-\section{Newton method}
-\begin{lstlisting}
 
-\end{lstlisting}
-
-\section{Combination of steepest decent methode and Newton method}
-\begin{lstlisting}
-
-\end{lstlisting}
 All the values of the table are average values of a 1000 values sample, calculated from the starting point [4;-1].
 As we can see, regardless of the tolerance and the maximun number of iterations, Newton's method is the fastest method. 
 When we have a large number of iterations, the combination of steepest and Newton's method is the most precise (smallest residual). 
@@ -186,5 +219,7 @@ For instance, here with the tolerance 10e-6 and 1000 iterations, the precision o
  if we just want a quick idea of the solution, we can just use the steepest descent with an alpha, arbitrary or optimal. But, if we prefer to be certain of the solution, we have to mix Newton's and steespest methods.
 The Newton's method is between the last ones : 
 very fast and quite precise but we cannot be completely sure of the solution, given that it will converge to the closest zero." 
+\subsection{Optimal residual for steepest newton}
+the maximal number of iterations is never reached, so only the tolerance is changed.
 
 \end{document}

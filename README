@@ -6,12 +6,7 @@ TODO:
 * in 'compareCPU': 
 ** print output in plain text file
 
-STRUCTURE:
-* comparecpu
-** fastmethode(alpha, method)
-*** delta ( X, method)
 
-
-* plotall
-** plot(X, method)
-*** delat (X, method)
+Protocol:
+* Equivalenz steepest decent == euler
+* only one solution for cubic equation for alpha

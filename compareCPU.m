@@ -10,7 +10,7 @@ maxiterations = 1000;
 X = [ 4; -1 ];
 experiments = 1000;
 
-[ residual1, time1 ] = fastmethod ( X, 0.00001, tol, maxiterations, experiments );
+[ residual1, time1 ] = fastmethod ( X, 0.001, tol, maxiterations, experiments );
 [ residual2, time2 ] = fastmethod ( X, 0, tol, maxiterations, experiments );
 [ residual3, time3 ] = fastmethod ( X, 'newton', tol, maxiterations, experiments );
 [ residual4, time4 ] = fastmethod ( X, 'steepest-newton', tol, maxiterations, experiments );
