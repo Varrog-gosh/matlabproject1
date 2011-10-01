@@ -33,6 +33,9 @@ and $x_i$ are the components of $\bf{x}$.
 The data is generated in the function \code{data}.
 $\bf{b}$ and $\bf{c}$ should be of the same dimension and $H$ should be a symmetric matrix which fits to the vectors.
 Line 6 can be used to check the dimensions of the input data, but this costs a lot of resources, because \code{data} is often called. 
+
+% what is the data
+
 \begin{lstlisting}
 function [b, H, c] = data
 	b = [1; 0];
@@ -98,6 +101,7 @@ That means that the Hessian of $g$ is positive definite.
 \section{Plot for $n=2$}
 
 \section{Steepest decent method}
+% 
 \begin{lstlisting}
 function [ iterations, X, Y, Z ] = steepest( Xk, alpha )
 	tol = 1e-6;
