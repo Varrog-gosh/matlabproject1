@@ -21,10 +21,10 @@ for i = 1:dim
 	xArray ( i, 1 ) = X (i);
 end
 valueArray(1) = problem(X);
-residuals(1) = 1;
+residualArray(1) = 1;
 
 norm_old = norm(grad(X));
-iteration = 0; % number of iteration
+iteration = 1; % number of iteration
 condition = 1;
 while condition % the condition is calculated at the end of the while loop, because there should at least one iteration
 	iteration = iteration + 1;
@@ -32,7 +32,7 @@ while condition % the condition is calculated at the end of the while loop, beca
 		if residualArray (i) > 1e-3
 			X = X - delta ( X, 0 );
 		else
-			X = X - delta (X, -1ll);
+			X = X - delta (X, -1);
 		end
 	end
 	X = X - delta ( X, method );
@@ -45,8 +45,12 @@ while condition % the condition is calculated at the end of the while loop, beca
 	% check if the maximum number of iterations is reached or the relative residual below the tolerance
 	condition = ( iteration <= maxiterations ) && ( residualArray ( iteration ) > tol );
 end
-iteration = [ 1 : iteration ]
-method
-toc
+
+% adjust the right array size
+valueArray = valueArray(1:iteration);
+residualArray = residualArray(1:iteration);
+xArray = xArray(:,1:iteration);
+iteration = [ 1 : iteration ];
+time = toc;
 end
 

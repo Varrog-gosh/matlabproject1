@@ -9,6 +9,7 @@ function [ delta ] = delta ( X, method )
 % OUTPUT
 %  delta	the change of X in the formular X^{k+1} = X^k - delta
 
+delta = 0;
 if method == -1
 	delta = linsolve ( hessian ( X ), grad ( X ) );
 elseif method == 0

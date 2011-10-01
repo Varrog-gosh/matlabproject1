@@ -54,27 +54,27 @@ if size ( H, 2 ) == 2
 
     G = zeros(1:1:size(iterations1));
     for i=size(iterations1);
-        G(i) = problem([Xk1(1,i); Xk1(2,i)]);
+        G(i) = problem([X1(1,i); X1(2,i)]);
     end
-    plot3(Xk1(1,:), Xk1(2,:), G, 'r-o');
+    plot3(X1(1,:), X1(2,:), G, 'r-o');
     
     G = zeros(1:1:size(iterations2));
     for i=size(iterations2);
-        G(i) = problem([Xk2(1,i); Xk2(2,i)]);
+        G(i) = problem([X2(1,i); X2(2,i)]);
     end
-    plot3(Xk2(1,:), Xk2(2,:), G, 'g-o');
+    plot3(X2(1,:), X2(2,:), G, 'g-o');
 
     G = zeros(1:1:size(iterations3)); 
     for i=size(iterations3);
-        G(i) = problem([Xk3(1,i); Xk3(2,i)]);
+        G(i) = problem([X3(1,i); X3(2,i)]);
     end
-    plot3(Xk3(1,:), Xk3(2,:), G, 'k-+');
+    plot3(X3(1,:), X3(2,:), G, 'k-+');
 
    G = zeros(1:1:size(iterations3));
     for i=size(iterations3);
-        G(i) = problem([Xk3(1,i); Xk3(2,i)]);
+        G(i) = problem([X3(1,i); X3(2,i)]);
     end
-    plot3(Xk3(1,:), Xk3(2,:), G, 'y-o');
+    plot3(X3(1,:), X3(2,:), G, 'y-o');
 
     grid;
     title('');
