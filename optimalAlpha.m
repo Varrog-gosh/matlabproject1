@@ -1,6 +1,10 @@
 function [ alpha_optimal ] = optimalAlpha( X )
 %GET_ALPHA Returns the optimal alpha for the steepest decend method
 % alpha is the solution of the equation a_0 + a_1 * α + a_2 * α^2 + a_3 * α^3
+% INPUT
+%  X	the point in this iteration
+% OUTPUT
+%  alpah	the optimal alpha for this iteration
 
 [ b, H, c] = data;
 

@@ -1,4 +1,4 @@
-function [iteration, xArray, residualArray, valueArray, time] = plot ( X, method, tol, maxiterations )
+function [iteration, xArray, residualArray, valueArray, time ] = plot ( X, method, tol, maxiterations )
 %NOWTON returns the zero of grad(g) = -b +Hx + 1/3 C(X)X, the minimum of g.
 % INPUT
 %  X	initial guess for the minimum
@@ -12,13 +12,13 @@ function [iteration, xArray, residualArray, valueArray, time] = plot ( X, method
 tic;
 [ ~, H, ~ ] = data;
 dim = size(H, 2);
-saveX = zeros  ( dim, maxiterations );
+xArray = zeros  ( dim, maxiterations );
 valueArray = zeros(1, maxiterations );
 residualArray = zeros(1, maxiterations );
 
 % save the first point
 for i = 1:dim
-	saveX ( i, 1 ) = X (i)
+	xArray ( i, 1 ) = X (i);
 end
 valueArray(1) = problem(X);
 residuals(1) = 1;
@@ -28,11 +28,11 @@ iteration = 0; % number of iteration
 condition = 1;
 while condition % the condition is calculated at the end of the while loop, because there should at least one iteration
 	iteration = iteration + 1;
-	if method == 'steepest-newton'
+	if method == -2
 		if residualArray (i) > 1e-3
 			X = X - delta ( X, 0 );
 		else
-			X = X - delta (X, 'newton');
+			X = X - delta (X, -1ll);
 		end
 	end
 	X = X - delta ( X, method );

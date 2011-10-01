@@ -1,5 +1,9 @@
 function [ g ] = problem ( X )
 %PROBLEM Generate the function g using the data given by DATA.
+% INPUT
+%  X	The point where the function should be evaluated
+% OUTPUT
+% g	the value of g at a specific point
 
 [ b, H, c ] = data;
 dim = size(H,1);

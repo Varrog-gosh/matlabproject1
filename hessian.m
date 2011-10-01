@@ -1,5 +1,5 @@
 function [ hessG ] = hessian( X )
-%HESSG Return the hessian of the function G of the project
+%HESSG Return the hessian of the function g of the project
 % INPUT
 %  X	The point where the hessian should be calculated
 % OUTPUT

@@ -1,12 +1,5 @@
 This is project 1.
 TODO:
-* plots with residuals new, because first relative residual should be 1.
-* gvalues.pdf new with log scala
-* new run time, because the improved steepest method didnt work probably. If alpha_optimal is only given at the beginning, it takes the same alpha for all iterations, and that is wrong
-* in 'compareCPU': 
-** print output in plain text file
-
-
-Protocol:
 * Equivalenz steepest decent == euler
 * only one solution for cubic equation for alpha
+* run all plots and numbers again, because of changes
