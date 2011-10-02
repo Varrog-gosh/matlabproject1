@@ -1,4 +1,7 @@
-function plotfunction
+function drawfunction
+%DRAWFUNCTION Draws g as a function of two parameters from -6 to 6
+% INPUT
+% OUTPUT
 
 x = -6 : 0.1 : 6;
 y = -6 : 0.1 : 6;

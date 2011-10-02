@@ -1,14 +1,16 @@
 function [iteration, xArray, residualArray, valueArray, time ] = plotmethod ( X, method, tol, maxiterations )
-%NOWTON returns the zero of grad(g) = -b +Hx + 1/3 C(X)X, the minimum of g.
+%PLOTMETHOD For different methods, the information for all iterations is generated.
 % INPUT
-%  X	initial guess for the minimum
-%  tol	toleranz for the relative residual
+%  X				initial guess for the minimum
+%  method			indicates which method is choosen. If method<0, a mixture of the steepest decent and Newton method will be used, for the rest see description in delta.m
+%  tol				tolerance for the relative residual
 %  maxiterations	the maximum number of iterations
 % OUTPUT
-%  iterations	the number of iterations needed till the relative residual is below the tollerance or the maximum number of iterations is reached
-%  xArray	matrix with maxiteration rows. Each row contain a vector
+%  iterations		array which contains the iterations
+%  xArray			matrix with maxiteration rows. Each row contain a column vector
 %  residualArray	array which contains the relative residuals of every iteration
-%  valueArray	array which contains the value of the function g after each iteration
+%  valueArray		array which contains the value of the function g after each iteration
+%  time				time needed for the whole method
 
 tic; % start clock
 [ ~, H, ~ ] = data;
@@ -29,11 +31,11 @@ iteration = 1; % number of iteration
 condition = 1;
 while condition % the condition is calculated at the end of the while loop, because there should at least one iteration
 	iteration = iteration + 1;
-	if method == -2
-		if residualArray (i) > 1e-3
+	if method < 0
+		if residualArray (iteration-1) > 10^method
 			X = X - delta ( X, 0 );
 		else
-			X = X - delta (X, -1);
+			X = X - delta (X, Inf);
 		end
 	else
 		X = X - delta ( X, method );
@@ -55,4 +57,3 @@ xArray = xArray(:,1:iteration);
 iteration = [ 1 : iteration ];
 time = toc; % end clock
 end
-

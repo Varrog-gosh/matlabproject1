@@ -1,13 +1,13 @@
 function main ()
-%PLOTALL Plots the relative residuals and the values of the function g versus the iterations.
-% If the dimension is 2, a 3dimensional plot is generated
+%MAIN This is the main method, which will plot the relative residuals and the values of g as a function iterations
+% If n is two, a 3d plot will be generated. The time for each method will be displayed.
 % INPUT
 % OUTPUT
 
 % set values
 X = [ 4; -1 ];
-tol = 1e-6;
-maxiterations = 1000;
+tol = 1e-8;
+maxiterations = 20;
 
 % here is a ugly implementation: if the second argument is 
 % * a positive number, the number is used as step size for the steepest decent method
@@ -17,7 +17,7 @@ maxiterations = 1000;
 [ iterations1, X1, res1, value1, time1 ] = plotmethod ( X, 0.0001, tol, maxiterations );
 [ iterations2, X2, res2, value2, time2 ] = plotmethod ( X, 0, tol, maxiterations );
 [ iterations3, X3, res3, value3, time3 ] = plotmethod ( X, Inf, tol, maxiterations );
-[ iterations4, X4, res4, value4, time4 ] = plotmethod ( X, -2, tol, maxiterations );
+[ iterations4, X4, res4, value4, time4 ] = plotmethod ( X, -4, tol, maxiterations );
 
 legends = { 'Steepest decent method with alpha = 0.0001', 'Steepest decent method with optimal alpha', 'Newton method', 'Steepest decent and Newton method' };
 %plot which shows how the residual decreases with the number of iteratives

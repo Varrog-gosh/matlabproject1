@@ -140,7 +140,7 @@ function [ hessG ] = hessian( X )
 end
 \end{lstlisting}
 
-\subsection{Minimum searching algorithm}
+\subsection{Minimum searching algorithm}\label{core}
 All methods work similar. 
 The only line which has to be changed is line 9.
 The real implementation is more complicated and is shown in the next chapter.
@@ -188,22 +188,30 @@ end
 \end{lstlisting}
  
 \section{Structure of the project}
-There are two main methods, \code{compareCPU} and \code{plotAll}, which are pretty similar.
-The functions called by \code{plotAll} return the necessary data to generate graphs, and the functions called by \code{compareCPU} is optimized to get the CPU time.
-
-\subsection{\code{compareCPU}}
-In this method the maximal number of iterations, the tolerance and the starting point is defined.
-\code{compareCPU} calls the function \code{fastmethod} with different parameters named \code{method}.
-If this parameter is \code{steepest-newton}, first steepest decent method is called, then the newton method.
-If this parameter is \code{newton}, \code{steepest} or a number, the line 9 of the last code fragment is changed with the method delta. 
-If a number is given, it is used as step size for the steepest decent method with constant α.
-\subsection{\code{plotAll}}
-In this method there are the same definitions as in \code{compareCPU}.
-Then it calls the function \code{plot}, which does nearly the same as \code{fastmethod}, except it does not count the CPU time, but returns the information to generate the graphs.
+The project can be started by executing \code{main()}. 
+\code{main} first calls \code{plotmethod}, which contains a variant of the code in chapter \ref{core} and returns the relative residuals, and the points ${\bf x}^{k}$.
+The change of $\bf x$ in each iteration is calculated in \code{delta} for various methods.
+At the end of \code{main}, all plots are generated using the functions \code{drawfunction} and \code{drawcurve}.
 
 \section{Results}
+With the program presented above, several experiments can be done. 
+A first look at the function with the defined values suggest the minimum is around $(0,0)^T$.
+
+\subsection{Steepest decent method with constant α}
+The larger $|x|$, the smaller has to be α. % I cant understand this
+If α is larger, the method does not converge any more.
+
+The steepest decent method with constant α is alway interrupted when reaching the maximum number of iterations and not by reaching the tolerance for the residual. For the starting value of $(4,-1)^T$, the algorithm needs $0.0957s$ for 1000 iterations.
 
 
+\subsection{Steepest decent method with optimal α}
+First the maximal numbers of iteration was decreased, to have a better view for low numbers of iteration.
+The algorithm works better than with constant α, but when the relative residual drops below $10^{-3}$, the relative residual rises and falls alternately, but with a dropping drift.
+\subsection{Newton method}
+
+
+
+\section{Your text, Im not sure if we should write that in our protocol}
 All the values of the table are average values of a 1000 values sample, calculated from the starting point [4;-1].
 As we can see, regardless of the tolerance and the maximun number of iterations, Newton's method is the fastest method. 
 When we have a large number of iterations, the combination of steepest and Newton's method is the most precise (smallest residual). 
