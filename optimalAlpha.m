@@ -18,12 +18,12 @@ a2 = 0;
 
 for i = 1 : dim
 C(i,i) = c(i) * X(i)^2;
-a3 = a3 + c(i) * gradg(i)^4;
+a3 = a3 + c(i)/3 * gradg(i)^4;
 a2 = a2 - c(i) * X(i) * gradg(i)^3;
 end
 
 a1 = gradg' * ( H + C ) * gradg;
-a0 = b'*gradg - X' * H * X - 1/3 * X' * H * gradg;
+a0 = b'*gradg - gradg' * H * X - 1/3 * X' * C * gradg;
 
 % alphas is a vector which contains all (real and complex) zeros
 alphas = roots( [ a3, a2, a1, a0 ] );

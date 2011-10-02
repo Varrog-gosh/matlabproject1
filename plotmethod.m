@@ -1,4 +1,4 @@
-function [iteration, xArray, residualArray, valueArray, time ] = plot ( X, method, tol, maxiterations )
+function [iteration, xArray, residualArray, valueArray, time ] = plotmethod ( X, method, tol, maxiterations )
 %NOWTON returns the zero of grad(g) = -b +Hx + 1/3 C(X)X, the minimum of g.
 % INPUT
 %  X	initial guess for the minimum
@@ -9,12 +9,13 @@ function [iteration, xArray, residualArray, valueArray, time ] = plot ( X, metho
 %  xArray	matrix with maxiteration rows. Each row contain a vector
 %  residualArray	array which contains the relative residuals of every iteration
 %  valueArray	array which contains the value of the function g after each iteration
-tic;
+
+tic; % start clock
 [ ~, H, ~ ] = data;
 dim = size(H, 2);
-xArray = zeros  ( dim, maxiterations );
-valueArray = zeros(1, maxiterations );
-residualArray = zeros(1, maxiterations );
+xArray        = zeros ( dim, maxiterations );
+valueArray    = zeros (   1, maxiterations );
+residualArray = zeros (   1, maxiterations );
 
 % save the first point
 for i = 1:dim
@@ -34,8 +35,9 @@ while condition % the condition is calculated at the end of the while loop, beca
 		else
 			X = X - delta (X, -1);
 		end
+	else
+		X = X - delta ( X, method );
 	end
-	X = X - delta ( X, method );
 	% here all information is saved
 	for i = 1:dim
 		xArray ( i, iteration ) = X (i);
@@ -51,6 +53,6 @@ valueArray = valueArray(1:iteration);
 residualArray = residualArray(1:iteration);
 xArray = xArray(:,1:iteration);
 iteration = [ 1 : iteration ];
-time = toc;
+time = toc; % end clock
 end
 

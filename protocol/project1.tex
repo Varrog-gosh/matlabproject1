@@ -14,11 +14,7 @@
 
 \begin{document}
 \title{Semester project TMA4215}
-<<<<<<< HEAD
-\author{10068\\ and\\ 728387}
-=======
 \author{10068 and 728387}
->>>>>>> origin/master
 \date{\mytoday}
 \maketitle
 %\newpage
@@ -36,9 +32,9 @@ and $x_i$ are the components of $\bf{x}$.
 
 \section{Mathematical calculations}
 At first some calculations are done.
-\subsection{Positive definition of $H$}
+\subsection{Positive definition of $H$}\label{definit}
 Since we use only one $H$, the proof is not generally, but only for one special matrix.
-Let $u=\begin{pmatrix}u_1\\u_2\end{pmatrix}\in \mathbb{R}^2$, and $H= \begin{pmatrix} a&b\\b&c\end{pmatrix}$, with $a,c>0$.
+Let $u=\begin{pmatrix}u_1\\u_2\end{pmatrix}\in \mathbb{R}^2\backslash \begin{pmatrix}0\\0\end{pmatrix}$, and $H= \begin{pmatrix} a&b\\b&c\end{pmatrix}$, with $a,c>0$.
 \begin{align*}
 {\bf u}^TH{\bf u} = au_1^2 + cu_2^2 + 2 b u_1u_2
 \end{align*}
@@ -84,10 +80,10 @@ $$
 has to be minimal, so $\frac{∂}{∂α} g({\bf x}^{(k+1)})$  has to be zero.
 This leads to the equation
 \begin{align*}
-&\left( {\bf b}{\bf \nabla} g - {\bf x}H{\bf x} - \frac13 {\bf x}  H  {\bf \nabla} g\right)
+&\left( {\bf b}{\bf \nabla} g - ({\bf \nabla}g) H{\bf x} - \frac13 {\bf x}  H  {\bf \nabla} g\right)
  + \left( ({\bf \nabla} g) ( H + C) {\bf \nabla} g \right)α
 \\+ &\left( - \sum_{i=1}^n c_i  x_i  ({\bf \nabla} g)_i^3 \right)α^2
-+ \left( \sum_{i=1}^n c_i  ({\bf \nabla} g)_i^4\right)α^3 
++ \frac13\left( \sum_{i=1}^n c_i  ({\bf \nabla} g)_i^4\right)α^3 
 \\ = a_0 + a_1 α + a_2 ο^2 + a_3cα^3= 0
 \end{align*}
 Because the function is cubic, there has to be at least one real zero.
@@ -97,21 +93,15 @@ The function is always rising. So only one zero is possible
 \section{Main algorithms}
 \subsection{Generation of the data}
 The data is generated in the function \code{data}.
-<<<<<<< HEAD
-$\bf{b}$ and $\bf{c}$ should be of the same dimension and $H$ should be a symmetric matrix which fits to the vectors.
-Line 6 can be used to check the dimensions of the input data, but this costs a lot of resources, because \code{data} is often called. 
 
-% what is the data
-
-=======
->>>>>>> origin/master
 \begin{lstlisting}
 function [ b, H, c ] = data
 	b = [ 1; 0 ];
 	c = [ 200; 400 ];
-	H = [ 200, 200 ; 200, 200 ];
+	H = [ 200, 20 ; 20, 2 ];
 end
 \end{lstlisting}
+With the calculations in chapter \ref{definit} can be easily seen that $H$ is positive definit.
 
 \subsection{Function, gradient and Hessian of $g$}
 
@@ -150,24 +140,10 @@ function [ hessG ] = hessian( X )
 end
 \end{lstlisting}
 
-<<<<<<< HEAD
-
-\section{Existence of minimum}
-Let $u\in R^n$ be an arbitrary vector, except $\vec{0}$ then
-$$u(\nabla^2g(x))u = u (H+C) u = u H u + uCu = uHu + \sum_{i=1}^n c_iu_i^2x_i^2.$$
-Since $H$ is positive definite, $uHu>0$ and because $c_i>0$, $uCu>0$, so 
-$$u(\nabla^2g(x))u>0$$ 
-That means that the Hessian of $g$ is positive definite.
-\section{Plot for $n=2$}
-
-\section{Steepest decent method}
-% 
-=======
 \subsection{Minimum searching algorithm}
 All methods work similar. 
 The only line which has to be changed is line 9.
 The real implementation is more complicated and is shown in the next chapter.
->>>>>>> origin/master
 \begin{lstlisting}
 X = [ 4; -1 ];
 maxiterations = 1000;
@@ -197,11 +173,11 @@ a3 = 0;
 a2 = 0;
 for i = 1 : dim
 	C(i,i) = c(i) * X(i)^2;
-	a3 = a3 + c(i) * gradg(i)^4;
+	a3 = a3 + c(i)/3 * gradg(i)^4;
 	a2 = a2 - c(i) * X(i) * gradg(i)^3;
 end
 a1 = gradg' * ( H + C ) * gradg;
-a0 = b'*gradg - X' * H * X - 1/3 * X' * H * gradg;
+a0 = b'*gradg - X' * H * gradg - 1/3 * X' * C * gradg;
 alphas = roots( [ a3, a2, a1, a0 ] );
 for i = 1 : 3
 	if imag ( alphas ( i ) ) == 0

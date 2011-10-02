@@ -5,12 +5,12 @@ function [ delta ] = delta ( X, method )
 %  method	a number to decide which method should be used.
 %   		positive number	number is used as step size for steepest decent method
 %   	0				steepest decent method with optimal alpha
-%   	-1				Newton methode
+%   	Inf				Newton methode
 % OUTPUT
 %  delta	the change of X in the formular X^{k+1} = X^k - delta
 
 delta = 0;
-if method == -1
+if method == Inf
 	delta = linsolve ( hessian ( X ), grad ( X ) );
 elseif method == 0
 	delta = optimalAlpha ( X ) * grad ( X );
