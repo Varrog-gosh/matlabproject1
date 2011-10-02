@@ -2,4 +2,8 @@ This is project 1.
 TODO:
 * Equivalenz steepest decent == euler
 * only one solution for cubic equation for alpha
-* run all plots and numbers again, because of changes
+* plots again with shading (read instructions carvefully)
+* why is for steepst method with constant alpha not stable for large alpha?
+* description for results
+* run with time
+* change in newton-steepest potente to get optimal time (i will do that)
