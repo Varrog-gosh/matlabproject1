@@ -32,9 +32,9 @@ and $x_i$ are the components of $\bf{x}$.
 
 \section{Mathematical calculations}
 At first some calculations are done.
-\subsection{Positive definition of $H$}
+\subsection{Positive definition of $H$}\label{definit}
 Since we use only one $H$, the proof is not generally, but only for one special matrix.
-Let $u=\begin{pmatrix}u_1\\u_2\end{pmatrix}\in \mathbb{R}^2$, and $H= \begin{pmatrix} a&b\\b&c\end{pmatrix}$, with $a,c>0$.
+Let $u=\begin{pmatrix}u_1\\u_2\end{pmatrix}\in \mathbb{R}^2\backslash \begin{pmatrix}0\\0\end{pmatrix}$, and $H= \begin{pmatrix} a&b\\b&c\end{pmatrix}$, with $a,c>0$.
 \begin{align*}
 {\bf u}^TH{\bf u} = au_1^2 + cu_2^2 + 2 b u_1u_2
 \end{align*}
@@ -80,10 +80,10 @@ $$
 has to be minimal, so $\frac{∂}{∂α} g({\bf x}^{(k+1)})$  has to be zero.
 This leads to the equation
 \begin{align*}
-&\left( {\bf b}{\bf \nabla} g - {\bf x}H{\bf x} - \frac13 {\bf x}  H  {\bf \nabla} g\right)
+&\left( {\bf b}{\bf \nabla} g - ({\bf \nabla}g) H{\bf x} - \frac13 {\bf x}  H  {\bf \nabla} g\right)
  + \left( ({\bf \nabla} g) ( H + C) {\bf \nabla} g \right)α
 \\+ &\left( - \sum_{i=1}^n c_i  x_i  ({\bf \nabla} g)_i^3 \right)α^2
-+ \left( \sum_{i=1}^n c_i  ({\bf \nabla} g)_i^4\right)α^3 
++ \frac13\left( \sum_{i=1}^n c_i  ({\bf \nabla} g)_i^4\right)α^3 
 \\ = a_0 + a_1 α + a_2 ο^2 + a_3cα^3= 0
 \end{align*}
 Because the function is cubic, there has to be at least one real zero.
@@ -93,13 +93,15 @@ The function is always rising. So only one zero is possible
 \section{Main algorithms}
 \subsection{Generation of the data}
 The data is generated in the function \code{data}.
+
 \begin{lstlisting}
 function [ b, H, c ] = data
 	b = [ 1; 0 ];
 	c = [ 200; 400 ];
-	H = [ 200, 200 ; 200, 200 ];
+	H = [ 200, 20 ; 20, 2 ];
 end
 \end{lstlisting}
+With the calculations in chapter \ref{definit} can be easily seen that $H$ is positive definit.
 
 \subsection{Function, gradient and Hessian of $g$}
 
@@ -138,7 +140,7 @@ function [ hessG ] = hessian( X )
 end
 \end{lstlisting}
 
-\subsection{Minimum searching algorithm}
+\subsection{Minimum searching algorithm}\label{core}
 All methods work similar. 
 The only line which has to be changed is line 9.
 The real implementation is more complicated and is shown in the next chapter.
@@ -171,11 +173,11 @@ a3 = 0;
 a2 = 0;
 for i = 1 : dim
 	C(i,i) = c(i) * X(i)^2;
-	a3 = a3 + c(i) * gradg(i)^4;
+	a3 = a3 + c(i)/3 * gradg(i)^4;
 	a2 = a2 - c(i) * X(i) * gradg(i)^3;
 end
 a1 = gradg' * ( H + C ) * gradg;
-a0 = b'*gradg - X' * H * X - 1/3 * X' * H * gradg;
+a0 = b'*gradg - X' * H * gradg - 1/3 * X' * C * gradg;
 alphas = roots( [ a3, a2, a1, a0 ] );
 for i = 1 : 3
 	if imag ( alphas ( i ) ) == 0
@@ -186,22 +188,41 @@ end
 \end{lstlisting}
  
 \section{Structure of the project}
-There are two main methods, \code{compareCPU} and \code{plotAll}, which are pretty similar.
-The functions called by \code{plotAll} return the necessary data to generate graphs, and the functions called by \code{compareCPU} is optimized to get the CPU time.
-
-\subsection{\code{compareCPU}}
-In this method the maximal number of iterations, the tolerance and the starting point is defined.
-\code{compareCPU} calls the function \code{fastmethod} with different parameters named \code{method}.
-If this parameter is \code{steepest-newton}, first steepest decent method is called, then the newton method.
-If this parameter is \code{newton}, \code{steepest} or a number, the line 9 of the last code fragment is changed with the method delta. 
-If a number is given, it is used as step size for the steepest decent method with constant α.
-\subsection{\code{plotAll}}
-In this method there are the same definitions as in \code{compareCPU}.
-Then it calls the function \code{plot}, which does nearly the same as \code{fastmethod}, except it does not count the CPU time, but returns the information to generate the graphs.
+The project can be started by executing \code{main()}. 
+\code{main} first calls \code{plotmethod}, which contains a variant of the code in chapter \ref{core} and returns the relative residuals, and the points ${\bf x}^{k}$.
+The change of $\bf x$ in each iteration is calculated in \code{delta} for various methods.
+At the end of \code{main}, all plots are generated using the functions \code{drawfunction} and \code{drawcurve}.
 
 \section{Results}
+With the program presented above, several experiments can be done. 
+A first look at the function with the defined values suggest the minimum is around $(0,0)^T$.
+\begin{figure}\label{g}
+	\includegraphics[width=\textwidth]{g.jpg}
+	\caption{The function $g$.}
+\end{figure}
+\begin{figure}\label{gvalue}
+	\includegraphics[width=\textwidth]{gvalues.jpg}
+	\caption{The value of $g$ as a function of iterations for various methods.}
+\end{figure}
+\begin{figure}\label{res}
+	\includegraphics[width=\textwidth]{res.jpg}
+	\caption{The relative residuals as a function of iterations for various methods.}
+\end{figure}
+\subsection{Steepest decent method with constant α}
+The larger $|x|$, the smaller has to be α. % I cant understand this
+If α is larger, the method does not converge any more.
+
+The steepest decent method with constant α is alway interrupted when reaching the maximum number of iterations and not by reaching the tolerance for the residual. For the starting value of $(4,-1)^T$, the algorithm needs $0.0957s$ for 1000 iterations.
 
 
+\subsection{Steepest decent method with optimal α}
+First the maximal numbers of iteration was decreased, to have a better view for low numbers of iteration.
+The algorithm works better than with constant α, but when the relative residual drops below $10^{-3}$, the relative residual rises and falls alternately, but with a dropping drift.
+\subsection{Newton method}
+
+
+
+\section{Your text, Im not sure if we should write that in our protocol}
 All the values of the table are average values of a 1000 values sample, calculated from the starting point [4;-1].
 As we can see, regardless of the tolerance and the maximun number of iterations, Newton's method is the fastest method. 
 When we have a large number of iterations, the combination of steepest and Newton's method is the most precise (smallest residual). 
