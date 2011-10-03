@@ -1,14 +1,17 @@
 function [iteration, xArray, residualArray, valueArray, time ] = plot ( X, method, tol, maxiterations )
 %NOWTON returns the zero of grad(g) = -b +Hx + 1/3 C(X)X, the minimum of g.
 % INPUT
-%  X	initial guess for the minimum
-%  tol	toleranz for the relative residual
+%  X				initial guess for the minimum
+%  method			steepest decent or newton, see description in function delta
+%  tol				toleranz for the relative residual
 %  maxiterations	the maximum number of iterations
 % OUTPUT
 %  iterations	the number of iterations needed till the relative residual is below the tollerance or the maximum number of iterations is reached
-%  xArray	matrix with maxiteration rows. Each row contain a vector
+%  xArray			matrix with maxiteration rows. Each row contain a vector
 %  residualArray	array which contains the relative residuals of every iteration
-%  valueArray	array which contains the value of the function g after each iteration
+%  valueArray		array which contains the value of the function g after each iteration
+%  time				time for the whole method
+
 tic;
 [ ~, H, ~ ] = data;
 dim = size(H, 2);

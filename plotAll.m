@@ -9,15 +9,10 @@ X = [ 4; -1 ];
 tol = 1e-6;
 maxiterations = 1000;
 
-% here is a ugly implementation: if the second argument is 
-% * a positive number, the number is used as step size for the steepest decent method
-% * 0, the steepest decent method with an optimal alpha is called
-% * -1, the Newton method is called
-% * -2, the steepest decent method is called and right after that the Newton method
-[ iterations1, X1, res1, value1, time1 ] = plot( X, 0.001, tol, maxiterations );
-[ iterations2, X2, res2, value2, time2 ] = plot( X, 0, tol, maxiterations );
-[ iterations3, X3, res3, value3, time3 ] = plot( X, -1, tol, maxiterations );
-[ iterations4, X4, res4, value4, time4 ] = plot( X, -2, tol, maxiterations );
+[ iterations1, X1, res1, value1, time1 ] = plot( X, 0.001, tol, maxiterations ); % steepest decent with constant alpah
+[ iterations2, X2, res2, value2, time2 ] = plot( X, 0, tol, maxiterations ); % steepest decent with optimal alpha
+[ iterations3, X3, res3, value3, time3 ] = plot( X, -1, tol, maxiterations ); % Newton
+[ iterations4, X4, res4, value4, time4 ] = plot( X, -2, tol, maxiterations ); % steepest decent + Newton
 
 
 %plot which shows how the residual decreases with the number of iteratives
