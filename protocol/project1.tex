@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt]{article}
+\documentclass[a4paper,11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{amssymb,amsmath,graphicx,listings}
@@ -14,8 +14,8 @@
 
 
 \begin{document}
-\title{Semester project TMA4215}
-\author{10\,026 and 10\,068}
+\title{First semester project in TMA4215}
+\author{10026 and 10068}
 \date{\mytoday}
 \maketitle
 %\newpage
@@ -32,17 +32,18 @@ Here $c_i > 0$ are the components of a vector ${\bf c} \in \mathbb{R}^n$
 and $x_i$ are the components of $\bf{x}$. 
 
 \section{Mathematical calculations}
-At first some calculations are done.
+Before the problem is implemented, some properties of the problem are discussed.
 \subsection{Positive definition of $H$}\label{definit}
-Since we use only one $H$, the proof is not generally, but only for one special matrix.
-Let $u=\begin{pmatrix}u_1\\u_2\end{pmatrix}\in \mathbb{R}^2\backslash \begin{pmatrix}0\\0\end{pmatrix}$, and $H= \begin{pmatrix} a&b\\b&c\end{pmatrix}$, with $a,c>0$.
+Since we use only a specific $H$, the proof is not generally, but for $n=2$.
+Let $u=\begin{pmatrix}u_1\\u_2\end{pmatrix}\in \mathbb{R}^2\backslash \vec{0}$, and $H= \begin{pmatrix} a&b\\b&c\end{pmatrix}$, with $a,c>0$.
 \begin{align*}
 {\bf u}^TH{\bf u} = au_1^2 + cu_2^2 + 2 b u_1u_2
 \end{align*}
-If we choose $b = \sqrt{a}\sqrt{c}$, we get
+If is chosen to $b = \sqrt{a}\sqrt{c}$, this yields to
 $$ = (\sqrt{a}u_1+\sqrt{c}u_2)^2 >0,$$
-no matter what ${\bf u}$ is. 
-$H$ is positive definite with this choice of $b$.
+for all ${\bf u}$.
+ 
+To obtain a positive definite $H$, $b$ has to be $\sqrt{a}\sqrt{c}$.
 
 \subsection{Gradient}
 The gradient can easily be calculated with sums.
@@ -64,33 +65,45 @@ The Hessian of $g$ is easily calculable:
 \end{align*}
 
 \subsection{Existence of minimum}
-Let $u\in R^n$ be an arbitrary vector, except $\vec{0}$ then
-$$u^T(\nabla^2g(x))u = u^T (H+C) u = u^T H u + u^TCu = u^THu + \sum_{i=1}^n c_iu_i^2x_i^2.$$
-Since $H$ is positive definite, $u^THu>0$ and because $c_i>0$, $u^TCu>0$, so 
-$$u^T(\nabla^2g(x))u>0$$ 
+Let $u\in R^n\backslash \vec{0}$ be an arbitrary vector, then
+$$u^T\left(\nabla^2g(x)\right)u = u^T (H+C) u = u^T H u + u^TCu = u^THu + \sum_{i=1}^n c_iu_i^2x_i^2.$$
+Since $H$ is positive definite, $u^THu>0$ and because $c_i>0\Rightarrow u^TCu>0$, so 
+$$u^T\left(\nabla^2g(x)\right)u>0$$ 
 That means that the Hessian of $g$ is positive definite and therefore strictly convex and has at most one local minimum.
 
 \subsection{Equivalence of steepest decent method and forward Euler method}
+The steepest decent method is defined as
+$${\bf x}^{k+1} = {\bf x}^k - α \nabla g(x^k).$$
+The Euler`s method uses the equation 
+$${\bf x}^{k+1} = {\bf x}^k + α f({\bf x}^k)$$
+to solve the equation ${\bf x}'(t) = f({\bf x}(t)$. 
+If $f{\bf x}^k)$ is chosen as $-\nabla g({\bf x}^k)$, both methods return the same result.
 
+The equation which should be solved with Euler`s method is therefore
+$$x'(t) = -\nabla g(x(t)).$$
 
 \subsection{Optimal $α$ in the steepest decent method}\label{calcalpha}
-To find the optimal $α$,
+To find the optimal $α$ for the steepest decent method,
 $$
 g\left({\bf x}^{(k+1)}\right) = g \left({\bf x}^{(k)} - α^{(k)} \nabla g({\bf x}^{(k+1)})\right)
 $$
 has to be minimal, so $\frac{∂}{∂α} g({\bf x}^{(k+1)})$  has to be zero.
 This leads to the equation
 \begin{align*}
-f=&\left( {\bf b}{\bf \nabla} g - {\bf x}^T  \left(H+\frac{C}{3}\right)  {\bf \nabla}^T g\right)
+&\left( {\bf b}{\bf \nabla} g - {\bf x}^T  \left(H+\frac{C}{3}\right)  {\bf \nabla}^T g\right)
  + \left( ({\bf \nabla} g) ( H + C) {\bf \nabla} g \right)α
 \\+ &\left( - \sum_{i=1}^n c_i  x_i  ({\bf \nabla} g)_i^3 \right)α^2
-+ \frac13\left( \sum_{i=1}^n c_i  ({\bf \nabla} g)_i^4\right)α^3 
++ \frac13\left( \sum_{i=1}^n c_i  ({\bf \nabla} g)_i^4\right)α^3 =0
 \end{align*}
 Since the function is a cubic polynomial, the limit for 
 $\lim_{α\rightarrow \pm\infty}f=\pm\infty$
 and because the function is continuous, there has to be at least one real zero.
 
-The function is always rising. So only one zero is possible.
+To the slope of $\frac{∂g}{∂α}$ is
+$$\frac{∂^2}{∂α^2} g({\bf x}-α\nabla g({\bf x}) ) = \frac{∂}{∂α} \left(-(\nabla g({\bf x})) \nabla g({\bf x} -α \nabla g({\bf x}))\right)
+ = (\nabla g({\bf x}))^T \nabla^2 g({\bf x} - α\nabla g({\bf x})) \nabla g({\bf x})>0,$$
+because the Hessian is positive definite.
+With a positive slope for every α, the function rising. So only one zero is possible.
 
 
 \section{Main algorithms}
@@ -109,7 +122,7 @@ With the calculations in chapter \ref{definit} can be easily seen that $H$ is po
 \subsection{Function, gradient and Hessian of $g$}
 
 \begin{lstlisting}
-function [ g ] = g ( X )
+function [ g ] = problem ( X )
 	[ b, H, c ] = data;
 	dim = size(H,1);
 	C = zeros ( dim, dim );
@@ -144,11 +157,12 @@ end
 \end{lstlisting}
 
 \subsection{Minimum searching algorithm}\label{core}
-All methods work similar, only line 9 has to be exchanged.
-The real implementation is more complicated and is shown in the next chapter.
+All methods are similar, only line 9 differs.
+One of the lines 9, 10 and 11 can be uncommented, the rest must be commented. 
+The real implementation is more complicated and is shown in chapter \ref{chap:arch}.
 \begin{lstlisting}
 X = [ 4; -1 ];
-maxiterations = 20;
+maxiterations = 30;
 tol = 1e-8;
 
 norm_old = norm ( grad ( X) );
@@ -164,7 +178,8 @@ end
 \end{lstlisting}
 
 \subsection{Computation of α}
-For the calculation of α see chapter \ref{calcalpha}.
+The calculation for α can be seen in chapter \ref{calcalpha}.
+Here only the implementation is stated.
 \begin{lstlisting}
 function [ alpha_optimal ] = optimalAlpha( X )
 [ b, H, c] = data;
@@ -189,22 +204,22 @@ end
 end
 \end{lstlisting}
  
-\section{Structure of the project}
+\section{Structure of the project}\label{chap:arch}
 The project can be started by executing \code{main()}. 
-There the initial guess, the tolerance and the maximal number of iterations is defined. 
-\code{main} first calls \code{plotmethod}, which contains a variant of the code in chapter \ref{core} and returns the relative residuals, and the points ${\bf x}^{k}$.
+In this function, the initial guess, the tolerance and the maximal number of iterations is defined. 
+\code{main} first calls the function \code{plotmethod}, which contains a variant of the code in chapter \ref{core} and returns the relative residuals, and the points ${\bf x}^{k}$.
 The change of $\bf x$ in each iteration is calculated in \code{delta} for various methods.
-At the end of \code{main}, all plots are generated using the functions \code{drawfunction} and \code{drawcurve}.
+At the end of function \code{main}, all plots are generated using the functions \code{drawfunction} and \code{drawcurve}.
 
-To count the time a process needs, there are the functions \code{meantime}, which makes many experiments and \code{fastmethod}, which is a smaller variant of \code{plotmethod}.
+To count the time a process needs, there are the functions \code{meantime}, which makes many experiments and \code{fastmethod}, which is a faster variant of \code{plotmethod}.
 
 \section{Results}
 With the program presented above, several experiments can be done.
 If not other stated, $(4,-1)^T$ is used as initial guess, $10^{-8}$ as tolerance and the number of iterations is limited to $30$.
-A first look at the function with the defined values suggest the minimum is around $(0,0)^T$.
+A first look at the function in figure \ref{g} with the defined values suggest the minimum is around $(0,0)^T$.
 \begin{figure}[h]\label{g}
 	\includegraphics[width=\textwidth]{g.jpg}
-	\caption{The function $g$.}
+	\caption{The function $g$ as a three dimensional plot. The points of for various iterations are drawn, too.}
 \end{figure}
 \begin{figure}\label{gvalue}
 	\includegraphics[width=\textwidth]{gvalues.jpg}
@@ -221,34 +236,48 @@ If α is not small enough, the value of g for the next iteration gets infinity a
 With $α= 0.0001$, the algorithm works, but the minimum is only slowly approached.
 The tolerance is reached after $744\unit{ms}$ and $25\,473$ iterations, so in most cases the limiting factor is the maximal number of iterations.
 
+In figure \ref{g} the steepest decent method with constant α approaches the minimum, but does not reach it for the maximum number of iterations is limited to 30.
+
 \subsection{Steepest decent method with optimal α}
 The algorithm works better than with constant α, but when the relative residual drops below $10^{-3}$, the relative residual rises and falls alternately, but with a dropping drift.
-It reaches the tolerance for the relative residual after 30 iterations and needs $4.33\unit{ms}$.
+It reaches the tolerance for the relative residual after 26 iterations and needs $4.33\unit{ms}$, which is much faster than with a constant α.
 
 \subsection{Newton method}
 At the beginning the Newton method reaches the minimum more slowly than the steepest  decent method with optimal α. 
-After the relative residual drop below $10^{-3}$, the Newton method converges faster.
-It reaches the tolerance after $1.69\unit{ms}$ and $11$ iterations.
+This can be seen well in figure \ref{g}, where the Newton method has a smaller step size at the beginning than the steepest decent method with optimal α.
+After the relative residual drop below $10^{-3}$, the Newton method converges faster, which can be seen in figure \ref{res}.
+It reaches the tolerance after $1.73\unit{ms}$ and $11$ iterations and is therefore faster than the steepest decent method with optimal α.
 
 If the initial guess for the minimum is far away from the minimum, the Newton method converges more slowly than the steepest decent method with optimal alpha.
-
+So the Newton method is not always faster than the steepest decent method with optimal α, only if the initial guess is near the minimum.
 
 \subsection{Steepest decent method and Newton method}
 First the steepest decent method is applied and after a certain tolerance limit, the algorithm switches to the Newton method.
 
 To find this tolerance limit, the total time for the algorithm is watched with various tolerance limits.
-The program is run $1000$ times for each limit and the mean is given in tabular \ref{tab:steepestnewton}.
+The program is run $1000$ times for each limit and the mean is given in table \ref{tab:steepestnewton}.
 To run the function with minimal time, the steepest decent method is applied till the relative residual is below $10^{-2}$ and the Newton method is applied till the default tolerance ($10^{-8}$) is reached.
 \begin{table}[h]
 	\centering
-	\label{tab:steepestnewton}
 	\begin{tabular}{l||c|c|c|c|c|c}
 		tolerance limit & $10^{-1}$& $10^{-2}$&  $10^{-3}$& $10^{-4}$& $10^{-5}$& $10^{-6}$\\\hline
 		time $[ms]$		& 1.73&1.72&1.79&1.92&4.24&4.27
 	\end{tabular}
 	\caption{Times for the mixture of steepest decent and Newton method for various changing conditions.} 
+	\label{tab:steepestnewton}
 \end{table}
+In figure \ref{g} it can be seen that the steepest decent method and this algorithm start together. 
+In both other plots it can be seen that at a certain point the methods differ.
+
+The algorithm is not much faster than the Newton method alone, which is because the initial guess is in the near of the minimum.
+A larger difference between the times can be obtained with a point far from the minimum.
+
+We decided to keep the number of iterations constant, because 20 iterations is not much.
+
+\section{Summary}
+It is shown that the function has at least one minimum and different numerical methods for finding the minimum are implemented and tested.
+The results, their convergence and the time they need are compared.
+It can be  seen that the best results can be obtained with a combination with the steepest decent method to get in the near of the minimum and the Newton method to get faster to the minimum, once there is a gross approximation.
 
 
-We decided to keep the number of iterations constant, because 20 iterations is not much. 
 \end{document}

@@ -62,10 +62,10 @@ if size ( H, 2 ) == 2
 end
 
 experiments = 1000;
-meantime ( X, 0.0001, tol, maxiterations, experiments )
-meantime ( X, 0, tol, maxiterations, experiments )
+%meantime ( X, 0.0001, tol, maxiterations, experiments )
+%meantime ( X, 0, tol, maxiterations, experiments )
 meantime ( X, Inf, tol, maxiterations, experiments )
-meantime ( X, -2, tol, maxiterations, experiments )
+%meantime ( X, -2, tol, maxiterations, experiments )
 
 
 
