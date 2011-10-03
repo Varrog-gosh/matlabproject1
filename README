@@ -1,9 +1,11 @@
 This is project 1.
+
 TODO:
 * Equivalenz steepest decent == euler
 * only one solution for cubic equation for alpha
-* plots again with shading (read instructions carvefully)
+* plots again with surf (as mentioned in task g)
+* compare newton with steepest for large |x-x_{zero}|
 * why is for steepst method with constant alpha not stable for large alpha?
-* description for results
-* run with time
+* time for 20 iterations and time for 1000 iterations
 * change in newton-steepest potente to get optimal time (i will do that)
+* pictures with better resolution
