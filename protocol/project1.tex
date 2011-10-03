@@ -8,13 +8,14 @@
 \newcommand{\leadingzero}[1]{\ifnum #1<10 0\the#1\else\the#1\fi}
 \newcommand{\mytoday}{\leadingzero{\day}.\leadingzero{\month}.\the\year}
 \newcommand{\code}[1]{\textit{#1}}
+\newcommand{\unit}[1]{\ensuremath{\, \mathrm{#1}}}
 
 \lstset{language=matlab, numbers=left,numberstyle=\footnotesize, basicstyle=\footnotesize}
 
 
 \begin{document}
 \title{Semester project TMA4215}
-\author{10068 and 728387}
+\author{10\,026 and 10\,068}
 \date{\mytoday}
 \maketitle
 %\newpage
@@ -39,7 +40,7 @@ Let $u=\begin{pmatrix}u_1\\u_2\end{pmatrix}\in \mathbb{R}^2\backslash \begin{pma
 {\bf u}^TH{\bf u} = au_1^2 + cu_2^2 + 2 b u_1u_2
 \end{align*}
 If we choose $b = \sqrt{a}\sqrt{c}$, we get
-$$ = (\sqrt{a}u_1+\sqrt{c}u_1)^2 >0,$$
+$$ = (\sqrt{a}u_1+\sqrt{c}u_2)^2 >0,$$
 no matter what ${\bf u}$ is. 
 $H$ is positive definite with this choice of $b$.
 
@@ -80,11 +81,10 @@ $$
 has to be minimal, so $\frac{∂}{∂α} g({\bf x}^{(k+1)})$  has to be zero.
 This leads to the equation
 \begin{align*}
-f=&\left( {\bf b}{\bf \nabla} g - {\bf x}  \left(H+\frac{C}{3}\right)  {\bf \nabla} g\right)
+f=&\left( {\bf b}{\bf \nabla} g - {\bf x}^T  \left(H+\frac{C}{3}\right)  {\bf \nabla}^T g\right)
  + \left( ({\bf \nabla} g) ( H + C) {\bf \nabla} g \right)α
 \\+ &\left( - \sum_{i=1}^n c_i  x_i  ({\bf \nabla} g)_i^3 \right)α^2
 + \frac13\left( \sum_{i=1}^n c_i  ({\bf \nabla} g)_i^4\right)α^3 
-\\ &= a_0 + a_1 α + a_2 α^2 + a_3α^3= 0
 \end{align*}
 Since the function is a cubic polynomial, the limit for 
 $\lim_{α\rightarrow \pm\infty}f=\pm\infty$
@@ -157,7 +157,7 @@ while condition
 	maxiterations = maxiterations - 1;
 	X = X - alpha * grad ( X ); % steepest decent method with constant alpha
 	% X = X - optimalAlpha ( X ) * grad ( X ); % with optimal alpha
-	% X = X - linsolve ( hessian ( X ), grad ( X ) ); % newton method
+	% X = X - linsolve ( hessian ( X ), grad ( X ) ); % Newton method
 	residual = norm ( grad ( X ) ) / norm_old;
 	condition = (maxiterations > 0) && ( residual > tol);
 end
@@ -196,11 +196,13 @@ There the initial guess, the tolerance and the maximal number of iterations is d
 The change of $\bf x$ in each iteration is calculated in \code{delta} for various methods.
 At the end of \code{main}, all plots are generated using the functions \code{drawfunction} and \code{drawcurve}.
 
+To count the time a process needs, there are the functions \code{meantime}, which makes many experiments and \code{fastmethod}, which is a smaller variant of \code{plotmethod}.
+
 \section{Results}
 With the program presented above, several experiments can be done.
-If not other stated, $(4,-1)^T$ is used as initial guess, $10^{-8}$ as tolerance and the number of iterations is limited to $20$.
+If not other stated, $(4,-1)^T$ is used as initial guess, $10^{-8}$ as tolerance and the number of iterations is limited to $30$.
 A first look at the function with the defined values suggest the minimum is around $(0,0)^T$.
-\begin{figure}\label{g}
+\begin{figure}[h]\label{g}
 	\includegraphics[width=\textwidth]{g.jpg}
 	\caption{The function $g$.}
 \end{figure}
@@ -213,53 +215,40 @@ A first look at the function with the defined values suggest the minimum is arou
 	\caption{The relative residuals as a function of iterations for various methods.}
 \end{figure}
 \subsection{Steepest decent method with constant α}
-The larger $|x|$, the smaller has to be α. % I cant understand this
-If α is larger, the method does not converge any more.
-
-The steepest decent method with constant α is alway interrupted when reaching the maximum number of iterations and not by reaching the tolerance for the residual.
-For the starting value of $(4,-1)^T$, the algorithm needs $0.0957s$ for 1000 iterations, but is still not at the tolerance.
-
+If the initial guess is far away from the solution, the gradient at this point is very large.
+To get ${\bf x}^{2}$, this gradient has to be multiplied by α.
+If α is not small enough, the value of g for the next iteration gets infinity and the program breaks down.
+With $α= 0.0001$, the algorithm works, but the minimum is only slowly approached.
+The tolerance is reached after $744\unit{ms}$ and $25\,473$ iterations, so in most cases the limiting factor is the maximal number of iterations.
 
 \subsection{Steepest decent method with optimal α}
 The algorithm works better than with constant α, but when the relative residual drops below $10^{-3}$, the relative residual rises and falls alternately, but with a dropping drift.
+It reaches the tolerance for the relative residual after 30 iterations and needs $4.33\unit{ms}$.
 
 \subsection{Newton method}
-The relative residual obtained with the Newton method for relative residuals larger than $10^{-2}$ more iterations compared to the steepest decent method with optimal α.
-On the other side the algorithm needs less iteration for small relative residuals.
+At the beginning the Newton method reaches the minimum more slowly than the steepest  decent method with optimal α. 
+After the relative residual drop below $10^{-3}$, the Newton method converges faster.
+It reaches the tolerance after $1.69\unit{ms}$ and $11$ iterations.
+
+If the initial guess for the minimum is far away from the minimum, the Newton method converges more slowly than the steepest decent method with optimal alpha.
+
 
 \subsection{Steepest decent method and Newton method}
-First the steepest decent method is applied and after a certain tolerance limit, the algorithm switches to the Newton method, to obtain the best result.
+First the steepest decent method is applied and after a certain tolerance limit, the algorithm switches to the Newton method.
 
 To find this tolerance limit, the total time for the algorithm is watched with various tolerance limits.
-3 times each
-\begin{tabular}{l|c|c|c|c|c|c|c|c}
-tolerance limit & $10^{-1}$& $10^{-2}$& $10^{-3}$& $10^{-4}$& $10^{-5}$& $10^{-6}$\\\hline
-time $[ms]$		& 1.37&1.06&1.26&1.54&2.17&2.97
-\end{tabular}
+The program is run $1000$ times for each limit and the mean is given in tabular \ref{tab:steepestnewton}.
+To run the function with minimal time, the steepest decent method is applied till the relative residual is below $10^{-2}$ and the Newton method is applied till the default tolerance ($10^{-8}$) is reached.
+\begin{table}[h]
+	\centering
+	\label{tab:steepestnewton}
+	\begin{tabular}{l||c|c|c|c|c|c}
+		tolerance limit & $10^{-1}$& $10^{-2}$&  $10^{-3}$& $10^{-4}$& $10^{-5}$& $10^{-6}$\\\hline
+		time $[ms]$		& 1.73&1.72&1.79&1.92&4.24&4.27
+	\end{tabular}
+	\caption{Times for the mixture of steepest decent and Newton method for various changing conditions.} 
+\end{table}
 
-The optimal tolerance limit is therefore...
+
 We decided to keep the number of iterations constant, because 20 iterations is not much. 
-
-
-
-
-\section{Your text, Im not sure if we should write that in our protocol}
-All the values of the table are average values of a 1000 values sample, calculated from the starting point [4;-1].
-As we can see, regardless of the tolerance and the maximun number of iterations, Newton's method is the fastest method. 
-When we have a large number of iterations, the combination of steepest and Newton's method is the most precise (smallest residual). 
-For this last method, the precision is increasing while the tolerance is decreasing but obviously, the cputime increases too.
-The first method, steepest descent with arbitrary alpha appears to be the worst method. Indeed, the cputime and the residual are greater there. 
-But, what is the interest of steepest method with the optimal alpha ? 
-Actually, this method gives us a precise idea of where is the minimum of the function, without being very precise. 
-The Newton's method can give us the same idea, but if we start far from the answer, the time of execution will be very higher. 
-Moreover, if there are several points where the gradient equals to zero, we can't be sure that we are precisely in a global minimum or a local extremum. 
-That is why it seems to be very useful to combine the two methods, because with the steepest descent we approach the solution to a certain point (and we are sure that is the solution) and with the Newton's method applied to this point we can go much more closer to the minimum. 
-For instance, here with the tolerance 10e-6 and 1000 iterations, the precision of the Newton-steepest method is 1 million times more precise than the Newton's method alone. 
-
-
- As a conclusion, we have to choose the method accorded to the result we expect :
- if we just want a quick idea of the solution, we can just use the steepest descent with an alpha, arbitrary or optimal. But, if we prefer to be certain of the solution, we have to mix Newton's and steespest methods.
-The Newton's method is between the last ones : 
-very fast and quite precise but we cannot be completely sure of the solution, given that it will converge to the closest zero." 
-
 \end{document}

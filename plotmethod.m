@@ -1,4 +1,4 @@
-function [iteration, xArray, residualArray, valueArray, time ] = plotmethod ( X, method, tol, maxiterations )
+function [iteration, xArray, residualArray, valueArray ] = plotmethod ( X, method, tol, maxiterations )
 %PLOTMETHOD For different methods, the information for all iterations is generated.
 % INPUT
 %  X				initial guess for the minimum
@@ -10,9 +10,7 @@ function [iteration, xArray, residualArray, valueArray, time ] = plotmethod ( X,
 %  xArray			matrix with maxiteration rows. Each row contain a column vector
 %  residualArray	array which contains the relative residuals of every iteration
 %  valueArray		array which contains the value of the function g after each iteration
-%  time				time needed for the whole method
 
-tic; % start clock
 [ ~, H, ~ ] = data;
 dim = size(H, 2);
 xArray        = zeros ( dim, maxiterations );
@@ -55,5 +53,4 @@ valueArray = valueArray(1:iteration);
 residualArray = residualArray(1:iteration);
 xArray = xArray(:,1:iteration);
 iteration = [ 1 : iteration ];
-time = toc; % end clock
 end
