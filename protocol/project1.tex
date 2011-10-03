@@ -231,10 +231,10 @@ On the other side the algorithm needs less iteration for small relative residual
 First the steepest decent method is applied and after a certain tolerance limit, the algorithm switches to the Newton method, to obtain the best result.
 
 To find this tolerance limit, the total time for the algorithm is watched with various tolerance limits.
-
+3 times each
 \begin{tabular}{l|c|c|c|c|c|c|c|c}
-tolerance limit & $10^{-1}$& $10^{-2}$& $10^{-3}$& $10^{-4}$& $10^{-5}$& $10^{-6}$& $10^{-7}$& $10^{-8}$\\\hline
-time $[s]$		& 1&2&3&4&5&6&7&8
+tolerance limit & $10^{-1}$& $10^{-2}$& $10^{-3}$& $10^{-4}$& $10^{-5}$& $10^{-6}$\\\hline
+time $[ms]$		& 1.37&1.06&1.26&1.54&2.17&2.97
 \end{tabular}
 
 The optimal tolerance limit is therefore...
