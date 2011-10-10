@@ -1,11 +1,5 @@
 This is project 1.
 
-TODO:
-* Equivalenz steepest decent == euler
-* only one solution for cubic equation for alpha
-
-done:
-* why is for steepst method with constant alpha not stable for large alpha?
-* change in newton-steepest potente to get optimal time (i will do that)
-* time for 20 iterations and time for 1000 iterations
-* compare newton with steepest for large |x-x_{zero}|
+For all of you who knows what kind of project this is:
+You should not copy code or the protocol without thinking.
+Be aware that you are here to study numerical mathematics.
